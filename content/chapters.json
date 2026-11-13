@@ -1,0 +1,64 @@
+{
+ "chapters": [
+  {
+   "id": "intro",
+   "label": "導論",
+   "title": "為什麼現代人需要原始佛法？——一部高精度的心理運作說明書",
+   "file": "content/intro.html"
+  },
+  {
+   "id": "ch1",
+   "label": "第一章",
+   "title": "人生的診斷書——四聖諦（問題分析與解決框架）",
+   "file": "content/ch1.html"
+  },
+  {
+   "id": "ch2",
+   "label": "第二章",
+   "title": "拆解「我」是誰——五蘊與六入處（認識身心的硬體與介面）",
+   "file": "content/ch2.html"
+  },
+  {
+   "id": "ch3",
+   "label": "第三章",
+   "title": "宇宙與心理的底層演算法——緣起法（因果與系統思維）",
+   "file": "content/ch3.html"
+  },
+  {
+   "id": "ch4",
+   "label": "第四章",
+   "title": "看清實相的兩把手術刀——三法印與「集、味、患、異、滅、離」",
+   "file": "content/ch4.html"
+  },
+  {
+   "id": "ch5",
+   "label": "第五章",
+   "title": "把佛法帶進日常——四念住與八正道（實踐與操作手冊）",
+   "file": "content/ch5.html"
+  },
+  {
+   "id": "ch6",
+   "label": "第六章",
+   "title": "讓心安靜下來——止與禪定（止觀雙運的基礎訓練）",
+   "file": "content/ch6.html"
+  },
+  {
+   "id": "ch7",
+   "label": "第七章",
+   "title": "業、輪迴與中道——佛陀如何看待人生的走向",
+   "file": "content/ch7.html"
+  },
+  {
+   "id": "ch8",
+   "label": "第八章",
+   "title": "修行路上的障礙與輔助工具——五蓋、根律儀與慈悲喜捨",
+   "file": "content/ch8.html"
+  },
+  {
+   "id": "end",
+   "label": "結語",
+   "title": "從「被動反應的機器」走向「清醒自由的覺察者」",
+   "file": "content/end.html"
+  }
+ ]
+}
