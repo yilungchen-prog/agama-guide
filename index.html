@@ -249,6 +249,24 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
   .g-gates{grid-template-columns:repeat(6,1fr)}
   .g-pairs{grid-template-columns:repeat(3,1fr)}
 }
+
+/* 篇別、標籤、選擇題演練 */
+.tab-part{flex:none;align-self:center;font-size:12px;color:var(--gold);letter-spacing:.15em;padding:0 2px 0 8px;border-left:1px solid var(--line);margin-left:4px}
+aside li.toc-part{font-size:12px;color:var(--cyan);letter-spacing:.2em;margin:18px 8px 0;padding-top:10px;border-top:1px solid var(--line)}
+aside li.toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+.part-intro{color:var(--muted);font-size:15.5px;border-left:3px solid var(--cyan);padding:6px 12px;background:var(--panel);border-radius:0 8px 8px 0}
+.lab-list{list-style:none;padding-left:0;display:flex;flex-direction:column;gap:10px}
+.lab-list>li.lab{margin:0;padding:12px 14px 12px;border:1px solid var(--line);border-left:3px solid var(--c);border-radius:0 12px 12px 0;background:rgba(17,36,61,.75)}
+.lab-list>li:not(.lab){margin-left:1.4em}
+li.lab>p{margin:0}
+.lab-badge{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:2px 12px 2px 8px;margin-bottom:6px;line-height:1.6;background:rgba(12,26,46,.6)}
+li.lab>.lab-badge{display:flex;width:max-content;max-width:100%}
+.lab-badge svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.lab-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--c);color:var(--bg);font-size:12px}
+p.lab-p{padding:12px 14px;border-left:3px solid var(--c);background:rgba(17,36,61,.75);border-radius:0 12px 12px 0}
+p.lab-p>.lab-badge{display:flex;width:max-content;margin-bottom:6px}
+.d-opts .btn.right{border-color:var(--gold);background:rgba(242,196,109,.15)}
+.d-opts .btn.wrong{border-color:#ff8a7a;background:rgba(255,138,122,.12)}
 </style>
 </head>
 <body id="top">
@@ -272,6 +290,7 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  function cnNum(s) { var d = '一二三四五六七八九'; if (s === '十') return 10; var i = s.indexOf('十'); if (i < 0) return d.indexOf(s) + 1; return (i === 0 ? 1 : d.indexOf(s[0]) + 1) * 10 + (s[i + 1] ? d.indexOf(s[i + 1]) + 1 : 0); }
   var main = $('#main'), toc = $('#toc'), scrim = $('#scrim'), tocbtn = $('#tocbtn');
   var chapters = [], secs = [], ids = [], curCh = null, heads = [], lastHead = null, glossary = [], drills = {}, diagrams = {};
   var CN = '一二三四五六七八九十';
@@ -305,6 +324,10 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
       sec.insertAdjacentHTML('beforeend', chapnav(i));
       main.appendChild(sec);
+      if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
+        if (i > 0) tabsHtml += '<span class="tab-part">' + c.part + '</span>';
+        tocHtml += '<li class="toc-part">' + c.part + '</li>';
+      }
       tabsHtml += '<a class="tab" href="#' + c.id + '" data-ch="' + c.id + '">' + c.label + '</a>';
       tocHtml += '<li><a class="tc" href="#' + c.id + '"><span>' + c.label + '</span>' + c.title + '</a><ol>' + sub + '</ol></li>';
     });
@@ -312,7 +335,7 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
     $('#tabs').innerHTML = tabsHtml; $('#toclist').innerHTML = tocHtml;
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
     $$('.dgm').forEach(renderDiagram);
-    secs.forEach(function (s) { suttaLinks(s); xrefs(s); terms(s); });
+    secs.forEach(function (s) { labelize(s); suttaLinks(s); xrefs(s); terms(s); });
     $$('.drill').forEach(renderDrill);
     route();
   }
@@ -324,6 +347,71 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
       (n ? '<a class="next" href="#' + n.id + '"><small>下一章</small>' + n.label + '：' + n.title + '</a>'
          : '<a class="next" href="#' + chapters[0].id + '"><small>讀完了</small>回到' + chapters[0].label + '</a>') +
       '</nav>';
+  }
+
+
+  // ---------- 小標籤：把「核心內涵：」這類開頭變成醒目的標籤 ----------
+  var ICON = {
+    book: '<svg viewBox="0 0 24 24"><path d="M4 5c3-1.5 6-1.5 8 0v14c-2-1.5-5-1.5-8 0zM20 5c-3-1.5-6-1.5-8 0v14c2-1.5 5-1.5 8 0z"/></svg>',
+    bulb: '<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
+    tool: '<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>',
+    scene: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg>',
+    shield: '<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/></svg>',
+    ask: '<svg viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4M12 18h.01"/></svg>',
+    swap: '<svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>',
+    warn: '<svg viewBox="0 0 24 24"><path d="M12 4l9 16H3zM12 10v4M12 17h.01"/></svg>'
+  };
+  var LAB = {
+    '原意': ['book', 'gold'], '原意與內涵': ['book', 'gold'], '核心內涵': ['book', 'gold'], '含義': ['book', 'gold'], '作用': ['book', 'gold'],
+    '現代理解': ['bulb', 'cyan'], '現代應用': ['tool', 'cyan'], '日常落實': ['tool', 'cyan'], '核心作法': ['tool', 'cyan'],
+    '情境': ['scene', 'muted'], '表現': ['scene', 'muted'], '舉個日常例子': ['scene', 'muted'], '比喻': ['swap', 'muted'],
+    '對治': ['shield', 'gold'], '結果': ['tool', 'cyan'], '提問': ['ask', 'cyan']
+  };
+  function labelOf(txt) {
+    var m = /^\s*([^：\s，。]{1,8})：\s*/.exec(txt || ''); if (!m) return null;
+    var k = m[1];
+    if (LAB[k]) return { k: k, len: m[0].length, icon: LAB[k][0], tone: LAB[k][1] };
+    if (/^第[一二三四五六七八九十]步$/.test(k)) return { k: k, len: m[0].length, step: true, tone: 'cyan' };
+    if (/^(誤解|卡關)[一二三四五六]?$/.test(k)) return { k: k, len: m[0].length, icon: 'warn', tone: k[0] === '誤' ? 'red' : 'muted' };
+    return { k: k, len: m[0].length, generic: true, tone: 'cyan' };
+  }
+  function firstText(el) {
+    var n = el.firstChild;
+    while (n && n.nodeType === 1 && (n.tagName === 'P' || n.tagName === 'STRONG')) n = n.firstChild;
+    while (n && n.nodeType === 3 && !n.nodeValue.trim() && n.nextSibling) n = n.nextSibling;
+    return n && n.nodeType === 3 ? n : null;
+  }
+  function badge(L) {
+    var b = document.createElement('span'); b.className = 'lab-badge t-' + L.tone;
+    b.innerHTML = (L.step ? '<b class="lab-num">' + cnNum(L.k.slice(1, -1)) + '</b>' : (L.icon ? ICON[L.icon] : '')) + L.k;
+    return b;
+  }
+  function labelize(sec) {
+    // 清單項目：已知標籤一律套用；其他「名詞：說明」只有在同一清單有兩項以上時才套用
+    $$('ul, ol', sec).forEach(function (list) {
+      if (list.closest('.dgm, .drill, aside, nav')) return;
+      var items = [].slice.call(list.children).filter(function (li) { return li.tagName === 'LI'; });
+      var found = items.map(function (li) { var t = firstText(li); return t ? labelOf(t.nodeValue) : null; });
+      var n = found.filter(Boolean).length;
+      items.forEach(function (li, i) {
+        var L = found[i]; if (!L || (L.generic && n < 2)) return;
+        var t = firstText(li); t.nodeValue = t.nodeValue.slice(L.len);
+        var holder = li.firstElementChild && li.firstElementChild.tagName === 'P' ? li.firstElementChild : li;
+        var strong = t.parentNode.tagName === 'STRONG' && !t.parentNode.textContent.trim() ? t.parentNode : null;
+        if (strong) strong.remove();
+        li.insertBefore(badge(L), li.firstChild);
+        li.classList.add('lab', 't-' + L.tone); list.classList.add('lab-list');
+      });
+    });
+    // 段落開頭的「誤解一：」「卡關：」
+    $$('p', sec).forEach(function (p) {
+      if (p.closest('li, .dgm, .drill')) return;
+      var s = p.firstElementChild; if (!s || s.tagName !== 'STRONG' || p.firstChild !== s) return;
+      var t = s.firstChild; if (!t || t.nodeType !== 3) return;
+      var L = labelOf(t.nodeValue); if (!L || L.generic) return;
+      t.nodeValue = t.nodeValue.slice(L.len);
+      p.insertBefore(badge(L), p.firstChild); p.classList.add('lab-p', 't-' + L.tone);
+    });
   }
 
   // ---------- 經文連結 ----------
@@ -352,9 +440,9 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
   function xrefs(sec) {
     var own = sec.getAttribute('data-ch');
     textWalk(sec).forEach(function (t) {
-      var re = /第([一二三四五六七八九十])章/g, s = t.nodeValue, m, last = 0, frag = null;
+      var re = /第([一二三四五六七八九十]{1,3})章/g, s = t.nodeValue, m, last = 0, frag = null;
       while ((m = re.exec(s))) {
-        var id = 'ch' + (CN.indexOf(m[1]) + 1);
+        var id = 'ch' + cnNum(m[1]);
         if (id === own || ids.indexOf(id) < 0) continue;
         frag = frag || document.createDocumentFragment();
         frag.appendChild(document.createTextNode(s.slice(last, m.index)));
@@ -597,7 +685,7 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
   function renderDiagram(box) {
     var d = diagrams[box.getAttribute('data-dg')]; if (!d) return;
     var u = suttaHref(d.sutta), h = '';
-    var src = (d.sub || '').split('　').filter(function (x) { return /[《〈]/.test(x); }).join('');
+    var src = (d.sub || '').split('　').filter(function (x) { return /[《〈]|阿含/.test(x); }).join('');
     d.blocks.forEach(function (b) { if (BLOCK[b.t]) h += BLOCK[b.t](b); });
     if (src) h += '<div class="g-src">出處：' + (u ? '<a class="sutta" href="' + u + '" target="_blank" rel="noopener">' + esc(src) + '</a>' : esc(src)) + '</div>';
     box.innerHTML = h;
@@ -606,8 +694,39 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 
   // ---------- 互動演練 ----------
   var FEEL = { '樂': '樂受（舒服）', '苦': '苦受（不舒服）', '捨': '捨受（不苦不樂）' };
+  function renderChoice(box, d) {
+    var si = 0;
+    function draw(pick) {
+      var sc = d.scenarios[si], h = '<h4>' + esc(d.title) + '</h4><p class="d-intro">' + esc(d.intro) + '</p>';
+      if (d.scenarios.length > 1) {
+        h += '<div class="d-scen">';
+        d.scenarios.forEach(function (s, i) { h += '<button type="button" class="btn' + (i === si ? ' on' : '') + '" data-sc="' + i + '">' + esc(s.name) + '</button>'; });
+        h += '</div>';
+      }
+      h += '<div class="d-step"><b class="k">情境</b>' + esc(sc.situation) + '</div><div class="d-q">' + esc(sc.question) + '</div><div class="d-opts">';
+      sc.options.forEach(function (o, i) {
+        var cls = 'btn';
+        if (pick != null && i === pick) cls += o.ok ? ' right' : ' wrong';
+        h += '<button type="button" class="' + cls + '" data-op="' + i + '">' + esc(o.label) + '</button>';
+      });
+      h += '</div>';
+      if (pick != null) {
+        var o = sc.options[pick];
+        h += '<div class="d-step ' + (o.ok ? 'good' : 'bad') + '"><b class="k">' + (o.ok ? '✓ 這樣做' : '再想想') + '</b>' + esc(o.feedback) + '</div>';
+        if (o.ok && si < d.scenarios.length - 1) h += '<div class="d-again"><button type="button" class="btn pri" data-sc="' + (si + 1) + '">下一個情境</button></div>';
+      }
+      box.innerHTML = h;
+    }
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.hasAttribute('data-sc')) { si = +b.getAttribute('data-sc'); draw(null); return; }
+      if (b.hasAttribute('data-op')) draw(+b.getAttribute('data-op'));
+    });
+    draw(null);
+  }
   function renderDrill(box) {
     var d = drills[box.getAttribute('data-drill')]; if (!d) return;
+    if (d.type === 'choice') { renderChoice(box, d); return; }
     var si = 0;
     function chain(state) {
       var steps = ['觸', '受', '愛', '取', '有', '苦'], out = '';
