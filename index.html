@@ -293,16 +293,35 @@ header.top{gap:10px}
 .home-card b{font-family:var(--display);font-size:17px;line-height:1.45}
 .home-card i{font-style:normal;font-size:13.5px;color:var(--muted);line-height:1.5}
 .home .chapnav{display:none}
+
+/* 兩層導覽：篇 → 主題 */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(12,26,46,.96);backdrop-filter:blur(6px)}
+.topbar header.top{position:static;background:none}
+.parts{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
+.parts::-webkit-scrollbar{display:none}
+.part-btn{flex:1 0 auto;text-align:center;text-decoration:none;font:inherit;font-size:15px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:6px 10px 7px;cursor:pointer}
+.part-btn.on{color:var(--gold);border-bottom-color:var(--gold)}
+.topbar .tabs{position:static;border-top:1px solid var(--line);padding:8px 16px}
+.tab{display:flex;flex-direction:column;align-items:center;line-height:1.25;padding:5px 14px 6px;border-radius:12px}
+.tab[hidden]{display:none}
+.tab small{font-size:11px;font-weight:500;opacity:.8;letter-spacing:.05em}
+.tab b{font-size:15.5px}
+html{scroll-padding-top:200px}
+@media (max-width:600px){header.top .where{display:none}}
+@media (min-width:1100px){aside{top:150px;height:calc(100vh - 150px)}}
 </style>
 </head>
 <body id="top">
 <div id="bar"></div>
+<div class="topbar">
 <header class="top">
   <button id="tocbtn" type="button" aria-controls="toc" aria-expanded="false">目錄</button>
   <a class="brand" href="#home" aria-label="回到首頁"><svg class="brand-lotus" viewBox="0 0 64 40" aria-hidden="true"><g fill="rgba(242,196,109,.25)" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M32 34C22 28 12 26 4 23c3 8 15 12 28 11z"/><path d="M32 34c10-6 20-8 28-11-3 8-15 12-28 11z"/><path d="M32 34C24 26 21 16 22 9c7 4 11 14 10 25z"/><path d="M32 34c8-8 11-18 10-25-7 4-11 14-10 25z"/><path d="M32 34c-4-10-4-22 0-31 4 9 4 21 0 31z"/></g></svg><span class="name">老陳的原始佛學指南</span></a>
   <span class="where" id="where"></span>
 </header>
+<nav class="parts" id="parts" aria-label="篇"></nav>
 <nav class="tabs" id="tabs" aria-label="章節"></nav>
+</div>
 <div id="scrim"></div>
 <div class="wrap">
 <aside id="toc" aria-label="目錄"><h2>目錄</h2><ol id="toclist"></ol></aside>
@@ -353,10 +372,9 @@ header.top{gap:10px}
       sec.insertAdjacentHTML('beforeend', chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
-        if (i > 0) tabsHtml += '<span class="tab-part">' + c.part + '</span>';
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
       }
-      tabsHtml += '<a class="tab" href="#' + c.id + '" data-ch="' + c.id + '">' + c.label + '</a>';
+      tabsHtml += '<a class="tab" href="#' + c.id + '" data-ch="' + c.id + '" data-part="' + (c.part || '') + '"><small>' + c.label + '</small><b>' + (c.short || c.label) + '</b></a>';
       tocHtml += '<li><a class="tc" href="#' + c.id + '"><span>' + c.label + '</span>' + c.title + '</a><ol>' + sub + '</ol></li>';
     });
     var home = document.createElement('section');
@@ -375,7 +393,10 @@ header.top{gap:10px}
     });
     home.innerHTML = hh;
     main.insertBefore(home, main.firstChild);
-    tabsHtml = '<a class="tab" href="#home" data-ch="home">首頁</a>' + tabsHtml;
+    var partsHtml = '<a class="part-btn home-btn" href="#home" data-p="home">首頁</a>';
+    parts.forEach(function (pt) { partsHtml += '<button type="button" class="part-btn" data-p="' + pt + '">' + pt + '</button>'; });
+    $('#parts').innerHTML = partsHtml;
+    $('#parts').addEventListener('click', function (e) { var b = e.target.closest('button.part-btn'); if (b) showPart(b.getAttribute('data-p')); });
     main.insertAdjacentHTML('beforeend', '<footer>老陳的原始佛學指南 · 左右滑動可切換章節 · 圖解可直接點選跳轉</footer>');
     $('#tabs').innerHTML = tabsHtml; $('#toclist').innerHTML = tocHtml;
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
@@ -585,11 +606,19 @@ header.top{gap:10px}
   scrim.addEventListener('click', function () { setOpen(false); });
   toc.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
 
+  function showPart(pt, atHome) {
+    $$('.part-btn').forEach(function (b) { var p = b.getAttribute('data-p'); b.classList.toggle('on', atHome ? p === 'home' : p === pt); });
+    $$('.tab').forEach(function (a) { a.hidden = a.getAttribute('data-part') !== pt; });
+    var t = $('#tabs'); if (t) t.scrollLeft = 0;
+    var on = $('.tab.on:not([hidden])'); if (on) t.scrollLeft = on.offsetLeft - t.clientWidth / 2 + on.offsetWidth / 2;
+  }
   // ---------- 路由（網址 #章節）----------
   function showChapter(ch) {
     if (ch === curCh) return;
     var sec = secs[ids.indexOf(ch)];
     secs.forEach(function (s) { s.hidden = (s !== sec); });
+    var cpart = chapterOf(ch) ? chapterOf(ch).part : chapters[0].part;
+    showPart(cpart, ch === 'home');
     $$('.tab').forEach(function (a) {
       var on = a.getAttribute('data-ch') === ch; a.classList.toggle('on', on);
       if (on) { var p = a.parentNode; p.scrollTo({ left: a.offsetLeft - p.clientWidth / 2 + a.offsetWidth / 2, behavior: 'smooth' }); }
