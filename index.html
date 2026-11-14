@@ -262,6 +262,18 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .story-t{font-family:var(--display);font-size:19px;font-weight:700;color:var(--gold);line-height:1.4}
 .story p{margin:8px 0}
 .story .story-k{color:var(--cyan);font-weight:700}
+.rd{margin:30px 0 0;padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid rgba(255,255,255,.08)}
+.rd-t{font-size:13px;letter-spacing:.15em;color:var(--gold);margin-bottom:6px}
+.rd-b{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;text-decoration:none;color:var(--ink);padding:6px 0;border-top:1px dashed rgba(255,255,255,.1)}
+.rd-b:first-of-type{border-top:none}
+.rd-b span{font-size:13px;color:var(--muted)}
+.book{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 10px}
+.book-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+.book-h b{font-family:var(--display);font-size:18px;color:var(--gold)}
+.book-lv{font-size:12px;color:var(--cyan);border:1px solid rgba(98,208,239,.35);border-radius:999px;padding:1px 8px}
+.book-a{font-size:14px;color:var(--muted);margin-top:2px}
+.book p{font-size:15.5px;line-height:1.8;margin:6px 0}
+.book-tip span{display:inline-block;font-size:12px;font-weight:700;color:#1a1205;background:var(--gold);border-radius:999px;padding:0 8px;margin-right:6px}
 .fb{margin:34px 0 10px;padding:16px;border:1px dashed rgba(242,196,109,.5);border-radius:14px;text-align:center}
 .fb-t{font-family:var(--display);font-weight:900;font-size:19px;color:var(--gold)}
 .fb p{font-size:15px;color:var(--muted);margin:8px 0 12px}
@@ -405,7 +417,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261114-2322';
+  var APP_VER = '20261115-0002';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -423,9 +435,9 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   function getJSON(u) { return fetch(bust(u), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); }
   function getText(u) { return fetch(bust(u), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.text(); }); }
 
-  Promise.all([getJSON('content/chapters.json'), getJSON('content/glossary.json'), getJSON('content/drills.json'), getJSON('content/diagrams.json'), getJSON('content/qa.json').catch(function () { return { qa: [] }; })])
+  Promise.all([getJSON('content/chapters.json'), getJSON('content/glossary.json'), getJSON('content/drills.json'), getJSON('content/diagrams.json'), getJSON('content/qa.json').catch(function () { return { qa: [] }; }), getJSON('content/books.json').catch(function () { return { books: [] }; })])
     .then(function (r) {
-      chapters = r[0].chapters; glossary = r[1].terms; drills = r[2]; diagrams = r[3].diagrams; qaList = r[4].qa || []; gcats = r[1]['分類'] || [];
+      chapters = r[0].chapters; glossary = r[1].terms; drills = r[2]; diagrams = r[3].diagrams; qaList = r[4].qa || []; books = r[5].books || []; gcats = r[1]['分類'] || [];
       return Promise.all(chapters.map(function (c) { return getText(c.file); }));
     })
     .then(build)
@@ -443,7 +455,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
+      sec.insertAdjacentHTML('beforeend', readingBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -477,7 +489,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
     $$('.dgm').forEach(renderDiagram);
     var dict = buildDict(); main.insertBefore(dict, main.querySelector('footer'));
-    tocHtml += '<li class="toc-part">工具</li><li><a class="tc" href="#dict"><span>辭典</span>名詞辭典與入門問答</a></li>';
+    tocHtml += '<li class="toc-part">工具</li><li><a class="tc" href="#dict"><span>辭典</span>名詞辭典與入門問答</a><ol><li><a href="#dict-1">一、名詞辭典</a></li><li><a href="#dict-2">二、入門問答</a></li><li><a href="#dict-3">三、推薦閱讀</a></li></ol></li>';
     $('#toclist').innerHTML = tocHtml;
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
     secs.forEach(function (s) { if (s !== dict) { labelize(s); suttaLinks(s); xrefs(s); terms(s); keywords(s); } });
@@ -594,10 +606,17 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   }
 
   // ---------- 名詞小卡 ----------
-  var termRe = null, termOf = {}, qaList = [], gcats = [];
+  var termRe = null, termOf = {}, qaList = [], gcats = [], books = [];
   // ---------- 意見與提問（Google 表單）----------
   var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfqd1IkShDE87oaBEGSAlzNauugP36bHZKefv8IcRyTfJhnNA/viewform';
   var FORM_CH_ENTRY = 'entry.186048612'; // 預先填入「跟哪一章有關」的 entry 編號，例如 'entry.123456'
+  function readingBox(cid) {
+    var list = books.filter(function (b) { return (b.chapters || []).indexOf(cid) >= 0; });
+    if (!list.length) return '';
+    return '<div class="rd"><div class="rd-t">延伸閱讀</div>' + list.map(function (b) {
+      return '<a class="rd-b" href="#dict-3"><b>《' + esc(b.title) + '》</b><span>' + esc(b.author) + '・' + esc(b.level) + '</span></a>';
+    }).join('') + '</div>';
+  }
   function feedbackBox(label) {
     var u = FORM_URL + '?usp=pp_url' + (FORM_CH_ENTRY && label ? '&' + FORM_CH_ENTRY + '=' + encodeURIComponent(label) : '');
     return '<div class="fb"><div class="fb-t">有意見或問題？告訴老陳</div><p>覺得哪裡寫錯、看不懂，或有問題想問，都歡迎留言。不用登入，也可以匿名。好的問題會整理進辭典的問答區。</p>' +
@@ -679,12 +698,17 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     var cats = gcats.length ? gcats : [];
     glossary.forEach(function (g) { if (g.cat && cats.indexOf(g.cat) < 0) cats.push(g.cat); });
     var h = '<h1 id="dict"><span class="ch-label">工具</span><br>名詞辭典與入門問答</h1>' +
-      '<p class="part-intro">看不懂的名詞，在這裡一次查清楚。每個名詞都附上它出現在哪幾章，點了就能跳過去讀。下面還有入門者最常問的問題。</p>' +
+      '<p class="part-intro">看不懂的名詞，在這裡一次查清楚。每個名詞都附上它出現在哪幾章，點了就能跳過去讀。下面還有入門者最常問的問題，以及推薦閱讀的書單。</p>' +
       '<div class="dsearch"><input id="dq" type="search" placeholder="搜尋名詞或問題，例如：無我、涅槃、吃素" autocomplete="off"></div>' +
       '<h2 id="dict-1">一、名詞辭典</h2><div class="dcats"><button type="button" class="dcat on" data-c="">全部</button>';
     cats.forEach(function (c) { h += '<button type="button" class="dcat" data-c="' + esc(c) + '">' + esc(c) + '</button>'; });
     h += '</div><div class="dict-list"></div><p class="dict-none" hidden>找不到符合的名詞。</p>' +
-      '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>' + feedbackBox('辭典與問答');
+      '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>' +
+      '<h2 id="dict-3">三、推薦閱讀</h2><p>挑的都是跟理性修佛方向接近、有中文版的書。建議順序：入門 → 打基礎 → 學方法 → 科學。每本都附上讀法提醒。</p>' +
+      books.map(function (b) {
+        return '<div class="book"><div class="book-h"><b>《' + esc(b.title) + '》</b><span class="book-lv">' + esc(b.level) + '</span></div><div class="book-a">' + esc(b.author) + '</div>' +
+          '<p>' + esc(b.why) + '</p><p class="book-tip"><span>讀法提醒</span>' + esc(b.tip) + '</p></div>';
+      }).join('') + feedbackBox('辭典與問答');
     sec.innerHTML = h;
     return sec;
   }
@@ -778,7 +802,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     var term = t.closest('.term');
     if (term) { openSheet(+term.getAttribute('data-g')); return; }
     if (t.closest('#shclose')) { closeSheet(); return; }
-    var jump = t.closest('a.xref, #sheet a[data-jump]');
+    var jump = t.closest('a.xref, a.rd-b, #sheet a[data-jump]');
     if (jump) { rememberSpot(); closeSheet(); return; }
     if (sheet.classList.contains('open') && !t.closest('#sheet')) closeSheet();
     var f = t.closest('figure');
