@@ -331,7 +331,7 @@ header.top{gap:10px}
 .brand{flex:1;min-width:0;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--gold);padding:5px 12px 5px 8px;border-radius:12px;border:1px solid rgba(242,196,109,.55);background:linear-gradient(135deg,rgba(242,196,109,.22),rgba(98,208,239,.08));box-shadow:0 0 14px rgba(242,196,109,.15)}
 .brand:hover{border-color:var(--gold)}
 .brand .name{flex:1;min-width:0;font-size:clamp(17px,4.9vw,26px)!important;line-height:1.15}
-.brand .name-sub{display:block;font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:.18em;color:var(--cyan);margin-top:2px}
+.brand .name-sub{display:block;font-family:var(--body);font-weight:700;font-size:clamp(13px,4vw,17px);letter-spacing:.12em;color:var(--cyan);margin-top:3px;white-space:nowrap}
 .cover-sub2{display:block;font-size:.5em;letter-spacing:.3em;color:var(--gold);margin-top:6px}
 .brand-lotus{width:30px;height:auto;flex:none}
 .home .cover{text-align:center;padding:40px 8px 30px;border-bottom:1px solid var(--line);margin-bottom:10px}
@@ -402,7 +402,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261114-2257';
+  var APP_VER = '20261114-2259';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
