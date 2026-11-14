@@ -240,6 +240,66 @@
    "from": [
     "ch25"
    ]
+  },
+  {
+   "id": "ch28",
+   "label": "第二十八章",
+   "title": "四聖諦完整版：每一個問題，都有四個動詞",
+   "file": "content/ch28.html",
+   "part": "進階篇",
+   "short": "四聖諦完整版",
+   "from": [
+    "ch1"
+   ]
+  },
+  {
+   "id": "ch29",
+   "label": "第二十九章",
+   "title": "十二因緣完整版：一條可以剪斷的鎖鏈",
+   "file": "content/ch29.html",
+   "part": "進階篇",
+   "short": "十二因緣完整版",
+   "from": [
+    "ch3"
+   ]
+  },
+  {
+   "id": "ch30",
+   "label": "第三十章",
+   "title": "八正道完整版：八個零件，一台會跑的車",
+   "file": "content/ch30.html",
+   "part": "進階篇",
+   "short": "八正道完整版",
+   "from": [
+    "ch5",
+    "ch12",
+    "ch13",
+    "ch14"
+   ]
+  },
+  {
+   "id": "ch31",
+   "label": "第三十一章",
+   "title": "安般念完整版：一口呼吸，走完整條路",
+   "file": "content/ch31.html",
+   "part": "進階篇",
+   "short": "安般念完整版",
+   "from": [
+    "ch6",
+    "ch9"
+   ]
+  },
+  {
+   "id": "ch32",
+   "label": "第三十二章",
+   "title": "三十七道品：把所有練習收進一張地圖",
+   "file": "content/ch32.html",
+   "part": "進階篇",
+   "short": "三十七道品",
+   "from": [
+    "ch15",
+    "end"
+   ]
   }
  ]
 }
