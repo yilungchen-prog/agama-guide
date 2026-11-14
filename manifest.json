@@ -1,0 +1,15 @@
+{
+ "name": "老陳的原始佛學指南：理性修佛篇",
+ "short_name": "老陳佛學指南",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#0c1a2e",
+ "theme_color": "#0c1a2e",
+ "lang": "zh-Hant-TW",
+ "icons": [
+  {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+  {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+  {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}

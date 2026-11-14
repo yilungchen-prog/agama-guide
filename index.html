@@ -5,6 +5,12 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>老陳的原始佛學指南：理性修佛篇</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0c1a2e">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="老陳佛學指南">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
 <style>
@@ -274,6 +280,25 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .book-a{font-size:14px;color:var(--muted);margin-top:2px}
 .book p{font-size:15.5px;line-height:1.8;margin:6px 0}
 .book-tip span{display:inline-block;font-size:12px;font-weight:700;color:#1a1205;background:var(--gold);border-radius:999px;padding:0 8px;margin-right:6px}
+.pr{margin:22px 0 0;text-align:center}
+.pr span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+.lic{display:inline-block;margin-top:6px;font-size:12.5px;line-height:1.7}
+.lic a{color:var(--cyan)}
+.offline-tip{font-size:13.5px;color:var(--muted);margin:14px auto 0;max-width:30em;line-height:1.7}
+@media print{
+ :root{--bg:#fff;--panel:#fff;--ink:#111;--muted:#444;--gold:#7a5200;--cyan:#0b5f7a;--line:#bbb}
+ html,body{background:#fff!important;color:#111!important}
+ .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
+ .wrap,main{display:block!important;margin:0!important;padding:0!important;max-width:none!important}
+ section.chapter[hidden]{display:none!important}
+ .story,.stance,.ditem,.book,.qa,.g-card,.dgm,.part-intro,.tier{background:#fff!important;box-shadow:none!important;border-color:#bbb!important}
+ h1,h2,h3,p,li{color:#111!important}
+ h2{break-after:avoid}
+ .story,.dgm,.book,.ditem{break-inside:avoid}
+ .term{text-decoration:none!important}
+ details.qa>*{display:block!important}
+ a{color:inherit!important}
+}
 .fb{margin:34px 0 10px;padding:16px;border:1px dashed rgba(242,196,109,.5);border-radius:14px;text-align:center}
 .fb-t{font-family:var(--display);font-weight:900;font-size:19px;color:var(--gold)}
 .fb p{font-size:15px;color:var(--muted);margin:8px 0 12px}
@@ -417,7 +442,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0040';
+  var APP_VER = '20261115-0110';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -430,6 +455,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     }).catch(function () {});
   }
   checkUpdate();
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') { navigator.serviceWorker.register('sw.js').catch(function () {}); }
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') checkUpdate(); });
   window.addEventListener('pageshow', function (e) { if (e.persisted) checkUpdate(); });
   function getJSON(u) { return fetch(bust(u), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); }
@@ -455,7 +481,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', readingBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
+      sec.insertAdjacentHTML('beforeend', readingBox(c.id) + printBox() + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -466,7 +492,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     var home = document.createElement('section');
     home.className = 'chapter home'; home.setAttribute('data-ch', 'home'); home.hidden = true;
     var hh = '<div class="cover">' + LOTUS_BIG + '<h1 id="home">老陳的原始佛學指南<span class="cover-sub2">理性修佛篇</span></h1><p class="cover-sub">以原始佛學為起點，用現代科學檢驗，在生活中驗證</p>' +
-      '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span><a class="btn" href="#dict">名詞辭典與入門問答</a></div></div>';
+      '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span><a class="btn" href="#dict">名詞辭典與入門問答</a></div><p class="offline-tip">想沒網路時也能讀？用手機瀏覽器的「分享」→「加入主畫面」，看過的章節就會存在手機裡。</p></div>';
     var parts = [];
     chapters.forEach(function (c) { if (parts.indexOf(c.part) < 0) parts.push(c.part); });
     var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，再把原始佛法用在情緒內耗、愛情與婚姻上。' };
@@ -484,7 +510,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     partsHtml += '<a class="part-btn dict-btn" href="#dict" data-p="dict">辭典</a>';
     $('#parts').innerHTML = partsHtml;
     $('#parts').addEventListener('click', function (e) { var b = e.target.closest('button.part-btn'); if (b) showPart(b.getAttribute('data-p')); });
-    main.insertAdjacentHTML('beforeend', '<footer>老陳的原始佛學指南：理性修佛篇 · 左右滑動可切換章節 · 圖解可直接點選跳轉</footer>');
+    main.insertAdjacentHTML('beforeend', '<footer>老陳的原始佛學指南：理性修佛篇 · 左右滑動可切換章節 · 圖解可直接點選跳轉<br><span class="lic">本站內容採 <a href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" target="_blank" rel="noopener">CC BY 4.0</a> 授權，歡迎自由連結、轉載、分享，請註明出處「老陳的原始佛學指南」。法布施，不收費。</span></footer>');
     tabsHtml += '<a class="tab dtab" href="#dict-1" data-ch="dict-1" data-part="辭典"><small>一</small><b>名詞辭典</b></a><a class="tab dtab" href="#dict-2" data-ch="dict-2" data-part="辭典"><small>二</small><b>入門問答</b></a><a class="tab dtab" href="#dict-3" data-ch="dict-3" data-part="辭典"><small>三</small><b>推薦閱讀</b></a>';
     $('#tabs').innerHTML = tabsHtml; $('#toclist').innerHTML = tocHtml;
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
@@ -618,6 +644,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       return '<a class="rd-b" href="#dict-3"><b>《' + esc(b.title) + '》</b><span>' + esc(b.author) + '・' + esc(b.level) + '</span></a>';
     }).join('') + '</div>';
   }
+  function printBox() { return '<div class="pr"><button type="button" class="btn pr-btn">列印本章／存成 PDF</button><span>在列印畫面選「儲存為 PDF」，就能把這一章存在手機裡。</span></div>'; }
   function feedbackBox(label) {
     var u = FORM_URL + '?usp=pp_url' + (FORM_CH_ENTRY && label ? '&' + FORM_CH_ENTRY + '=' + encodeURIComponent(label) : '');
     return '<div class="fb"><div class="fb-t">有意見或問題？告訴老陳</div><p>覺得哪裡寫錯、看不懂，或有問題想問，都歡迎留言。不用登入，也可以匿名。好的問題會整理進辭典的問答區。</p>' +
@@ -800,6 +827,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // ---------- 點擊總管 ----------
   document.addEventListener('click', function (e) {
     var t = e.target;
+    if (t.closest('.pr-btn')) { window.print(); return; }
     var term = t.closest('.term');
     if (term) { openSheet(+term.getAttribute('data-g')); return; }
     if (t.closest('#shclose')) { closeSheet(); return; }
