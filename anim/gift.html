@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<script>if(/embed=1/.test(location.search))document.documentElement.className='embed';</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>動畫故事試作：別人罵你，那份禮物歸誰？</title>
+<style>
+:root{--bg:#0c1a2e;--panel:#11243d;--ink:#e7edf3;--muted:#9db0c4;--gold:#f2c46d;--cyan:#62d0ef;--red:#ff8a7a;--line:#24405f}
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:var(--ink);font-family:"Noto Sans TC","PingFang TC",sans-serif;display:flex;justify-content:center;min-height:100vh}
+.wrap{width:100%;max-width:440px;padding:14px}
+.stage{position:relative;width:100%;aspect-ratio:9/16;background:var(--bg);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+.bar{position:absolute;left:0;top:0;height:4px;background:var(--gold);width:0}
+.tag{position:absolute;top:18px;left:18px;font-size:13px;letter-spacing:.15em;color:var(--gold);border:1px solid rgba(242,196,109,.5);border-radius:999px;padding:3px 10px}
+.vis{position:absolute;left:0;right:0;top:12%;height:52%}
+.cap{position:absolute;left:7%;right:7%;bottom:9%;min-height:22%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:"Noto Serif TC","Songti TC",serif;font-weight:900;font-size:clamp(20px,6vw,27px);line-height:1.55;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.cap.on{opacity:1;transform:none}
+.cap em{font-style:normal;color:var(--gold)}
+.cap b{color:var(--cyan)}
+.who{position:absolute;bottom:0;width:30%;text-align:center;font-size:14px;color:var(--muted);transition:opacity .6s}
+.fig{width:64%;margin:0 auto 8px;aspect-ratio:1/1.5;position:relative}
+.fig .h{position:absolute;left:25%;top:0;width:50%;aspect-ratio:1;border-radius:50%;border:3px solid currentColor}
+.fig .b{position:absolute;left:10%;top:36%;width:80%;height:58%;border-radius:40% 40% 10% 10%;border:3px solid currentColor}
+#left{left:6%;color:var(--red)} #right{right:6%;color:var(--gold)}
+.angry .h{animation:shake .25s infinite}
+@keyframes shake{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+.words{position:absolute;top:22%;left:30%;font-weight:900;color:var(--red);font-size:24px;opacity:0}
+.words.fly{animation:fly 1.4s ease-out infinite}
+@keyframes fly{0%{opacity:0;transform:translate(0,0) scale(.8)}20%{opacity:1}100%{opacity:0;transform:translate(110px,10px) scale(1.2)}}
+.gift{position:absolute;top:30%;left:24%;width:58px;height:50px;border:3px solid var(--gold);border-radius:6px;opacity:0;transition:left 1.6s ease-in-out,opacity .5s}
+.gift:before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:3px;margin-left:-1.5px;background:var(--gold)}
+.gift:after{content:"";position:absolute;left:-3px;right:-3px;top:40%;height:3px;background:var(--gold)}
+.gift.show{opacity:1}.gift.go{left:58%}.gift.back{left:24%}
+.arrow{position:absolute;height:4px;width:120px;top:38%;left:-130px;background:var(--red);opacity:0;transition:left .7s ease-in,opacity .3s}
+.arrow:after{content:"";position:absolute;right:-12px;top:-7px;border:9px solid transparent;border-left:14px solid var(--red)}
+.arrow.a2{top:50%;background:var(--muted)}.arrow.a2:after{border-left-color:var(--muted)}
+.arrow.hit{left:calc(64% - 130px);opacity:1}
+.mark{position:absolute;font-size:15px;color:var(--muted);opacity:0;transition:opacity .4s}
+.mark.on{opacity:1}
+.calm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .8s}
+.calm.on{opacity:1}
+.ring{width:42%;aspect-ratio:1;border-radius:50%;border:3px solid var(--cyan);animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.85);opacity:.6}50%{transform:scale(1.05);opacity:1}}
+.q{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Noto Serif TC",serif;font-weight:900;font-size:110px;color:var(--gold);opacity:0;transition:opacity .6s}
+.q.on{opacity:.9;animation:breathe 3s ease-in-out infinite}
+.end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;transition:opacity .8s;text-align:center;padding:0 10%}
+.end.on{opacity:1}
+.end .t{font-family:"Noto Serif TC",serif;font-weight:900;font-size:24px;color:var(--gold)}
+.end .s{font-size:14px;color:var(--muted);line-height:1.7}
+.ctrl{display:flex;gap:10px;justify-content:center;margin-top:12px}
+button{font:inherit;font-size:16px;font-weight:700;padding:10px 22px;border-radius:999px;border:1px solid var(--gold);background:var(--gold);color:#1a1205;cursor:pointer}
+button.sec{background:none;color:var(--gold)}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.7}
+.play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(7,17,31,.55)}
+.play[hidden]{display:none}
+html.embed body{background:var(--bg);min-height:0;height:100vh;align-items:center}
+html.embed .wrap{padding:0;max-width:none;height:100%;display:flex;flex-direction:column;justify-content:center}
+html.embed .stage{border-radius:0;border:0;width:auto;height:calc(100% - 64px);max-width:100%;margin:0 auto}
+html.embed .note{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage" id="stage">
+    <div class="bar" id="bar"></div>
+    <div class="tag">故事時間</div>
+    <div class="vis">
+      <div class="who" id="left"><div class="fig"><div class="h"></div><div class="b"></div></div>賓耆迦</div>
+      <div class="who" id="right"><div class="fig"><div class="h"></div><div class="b"></div></div>佛陀</div>
+      <div class="words" id="words">罵！</div>
+      <div class="gift" id="gift"></div>
+      <div class="arrow" id="a1"></div>
+      <div class="arrow a2" id="a2"></div>
+      <div class="mark" id="m1" style="left:8%;top:28%">第一支箭：別人的話</div>
+      <div class="mark" id="m2" style="left:8%;top:60%">第二支箭：自己補上的</div>
+      <div class="q" id="q">？</div>
+      <div class="calm" id="calm"><div class="ring"></div></div>
+      <div class="end" id="end"><div class="t">這份禮物，我要收嗎？</div><div class="s">出處：雜阿含 1152 經<br>老陳的原始佛學指南：理性修佛篇</div></div>
+    </div>
+    <div class="cap" id="cap"></div>
+    <div class="play" id="playov"><button id="start">播放</button></div>
+  </div>
+  <div class="ctrl"><button class="sec" id="replay">重播</button></div>
+  <p class="note">試作版：只有動畫與字幕，沒有聲音。約 50 秒。</p>
+</div>
+<script>
+var S=[
+ [0,'有人當面罵你，<br>你會怎麼做？',{q:1}],
+ [4,'佛陀的時代，<br>一位年輕人跑到佛陀面前，<br><em>破口大罵</em>。',{fig:1,angry:1,words:1}],
+ [9.5,'佛陀等他罵完，<br>只問了一個問題。',{fig:1}],
+ [13.5,'「你家請客，<br>客人不吃，<br>那些菜歸誰？」',{fig:1,gift:'show'}],
+ [18.5,'「當然還是我的。」',{fig:1,gift:'go'}],
+ [22,'「你今天罵了這麼多，<br>我<em>不收</em>。<br>這些話，歸誰？」',{fig:1,gift:'back'}],
+ [28,'別人的話，<br>是<b>第一支箭</b>，<br>躲不掉。',{me:1,a1:1}],
+ [33,'收下、吞進去、一直想，<br>是自己補上的<br><b>第二支箭</b>。',{me:1,a1:1,a2:1}],
+ [38.5,'不收，不是假裝沒聽到；<br>是看見那份不舒服，<br>不把它變成自己的怒火。',{calm:1}],
+ [45,'',{end:1}],
+ [50,null,{end:1}]
+];
+var $=function(i){return document.getElementById(i)},timers=[],t0=0,raf=0,TOTAL=50;
+function apply(v){
+ $('left').style.opacity=v.fig?1:0; $('right').style.opacity=(v.fig||v.me)?1:0;
+ $('q').classList.toggle('on',!!v.q);
+ $('left').classList.toggle('angry',!!v.angry);
+ $('words').classList.toggle('fly',!!v.words);
+ var g=$('gift');g.className='gift';if(v.gift){g.classList.add('show');if(v.gift!=='show')g.classList.add(v.gift==='go'?'go':'back');}
+ $('a1').classList.toggle('hit',!!v.a1);$('m1').classList.toggle('on',!!v.a1);
+ $('a2').classList.toggle('hit',!!v.a2);$('m2').classList.toggle('on',!!v.a2);
+ $('calm').classList.toggle('on',!!v.calm);$('end').classList.toggle('on',!!v.end);
+}
+function show(i){var c=$('cap'),s=S[i];if(s[1]===null)return;c.classList.remove('on');setTimeout(function(){c.innerHTML=s[1]?'<span>'+s[1]+'</span>':'';if(s[1])c.classList.add('on');apply(s[2]);},300);}
+function tick(){var e=(performance.now()-t0)/1000;$('bar').style.width=Math.min(100,e/TOTAL*100)+'%';if(e<TOTAL)raf=requestAnimationFrame(tick);}
+function play(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(raf);$('playov').hidden=true;apply({});$('cap').classList.remove('on');
+ S.forEach(function(s,i){timers.push(setTimeout(function(){show(i)},s[0]*1000));});t0=performance.now();tick();}
+$('start').onclick=play;$('replay').onclick=play;apply({});
+if(/autoplay=1/.test(location.search))play();
+</script>
+</body>
+</html>

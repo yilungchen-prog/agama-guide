@@ -58,3 +58,11 @@
 - **意見表單**：`index.html` 的 `FORM_URL` 與 `FORM_CH_ENTRY`（entry.186048612）。
 - **PDF**：`python3 tools/build_pdfs.py` 產生 `pdf/<章>.pdf` 與 `pdf/book.pdf`（只重做內容有變的章節；改了版面要加 `--force`）。
 - **發布**：先跑 PDF 腳本，再更新 `version.json` 與 `APP_VER`，推送到 GitHub。
+
+
+## 動畫故事（anim/）
+
+- 每個動畫是一個獨立的 HTML 頁（`anim/<名稱>.html`），純 CSS/JS 動畫＋字幕，沒有影片檔、沒有聲音。
+- 章節裡的故事框加上 `data-anim="<名稱>"`，引擎會自動在標題下方加「看動畫故事」按鈕，點了用全螢幕框播放（`?embed=1&autoplay=1`），右上角 ✕ 關閉。
+- 劇本在檔案裡的 `S` 陣列：`[秒數, 字幕HTML, 畫面狀態]`；`TOTAL` 是總長。
+- 目前：`gift`（罵人的禮物，雜阿含 1152 經，第十章）。
