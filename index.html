@@ -417,7 +417,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0002';
+  var APP_VER = '20261115-0023';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -469,7 +469,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span><a class="btn" href="#dict">名詞辭典與入門問答</a></div></div>';
     var parts = [];
     chapters.forEach(function (c) { if (parts.indexOf(c.part) < 0) parts.push(c.part); });
-    var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，看清相通與不同。' };
+    var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，再加上一本處理情緒內耗的急救箱。' };
     parts.forEach(function (pt) {
       hh += '<div class="home-part"><h2>' + pt + '</h2>' + (DESC[pt] ? '<p class="home-desc">' + DESC[pt] + '</p>' : '') + '<div class="home-grid">';
       chapters.filter(function (c) { return c.part === pt; }).forEach(function (c) {
