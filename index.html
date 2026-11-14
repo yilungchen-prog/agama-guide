@@ -479,7 +479,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0624';
+  var APP_VER = '20261115-0646';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -892,8 +892,18 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     $$('.part-btn').forEach(function (b) { var p = b.getAttribute('data-p'); b.classList.toggle('on', mark ? p === mark : p === pt); });
     $$('.tab').forEach(function (a) { a.hidden = a.getAttribute('data-part') !== pt; });
     var pb = $('.part-btn.on'), pr = $('#parts'); if (pb && pr) pr.scrollLeft = pb.offsetLeft - pr.clientWidth / 2 + pb.offsetWidth / 2;
-    var t = $('#tabs'); if (t) t.scrollLeft = 0;
-    var on = $('.tab.on:not([hidden])'); if (on) t.scrollLeft = on.offsetLeft - t.clientWidth / 2 + on.offsetWidth / 2;
+    var t = $('#tabs'), changed = pt !== curPart; curPart = pt;
+    if (t && changed) t.scrollLeft = 0;
+    centerTab();
+  }
+  var curPart = null;
+  function centerTab() {
+    function go() {
+      var t = $('#tabs'), on = $('.tab.on:not([hidden])'), pr = $('#parts'), pb = $('.part-btn.on');
+      if (t && on) t.scrollLeft = on.offsetLeft - t.clientWidth / 2 + on.offsetWidth / 2;
+      if (pr && pb) pr.scrollLeft = pb.offsetLeft - pr.clientWidth / 2 + pb.offsetWidth / 2;
+    }
+    go(); requestAnimationFrame(go); setTimeout(go, 350);
   }
   // ---------- 路由（網址 #章節）----------
   function showChapter(ch) {
@@ -904,8 +914,8 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     showPart(ch === 'dict' ? '辭典' : cpart, (ch === 'home' || ch === 'dict') ? ch : null);
     $$('.tab').forEach(function (a) {
       var on = a.getAttribute('data-ch') === ch; a.classList.toggle('on', on);
-      if (on) { var p = a.parentNode; p.scrollTo({ left: a.offsetLeft - p.clientWidth / 2 + a.offsetWidth / 2, behavior: 'smooth' }); }
     });
+    centerTab();
     heads = $$(':scope > h1, :scope > h2', sec); curCh = ch; lastHead = null;
     var cc = chapterOf(ch); $('#where').textContent = cc ? cc.label : (ch === 'dict' ? '辭典' : '');
     if (cc) { try { localStorage.setItem('lastCh', ch); } catch (e) {} }
