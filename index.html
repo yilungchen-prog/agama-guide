@@ -405,7 +405,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261114-2318';
+  var APP_VER = '20261114-2322';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -597,7 +597,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   var termRe = null, termOf = {}, qaList = [], gcats = [];
   // ---------- 意見與提問（Google 表單）----------
   var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfqd1IkShDE87oaBEGSAlzNauugP36bHZKefv8IcRyTfJhnNA/viewform';
-  var FORM_CH_ENTRY = ''; // 預先填入「跟哪一章有關」的 entry 編號，例如 'entry.123456'
+  var FORM_CH_ENTRY = 'entry.186048612'; // 預先填入「跟哪一章有關」的 entry 編號，例如 'entry.123456'
   function feedbackBox(label) {
     var u = FORM_URL + '?usp=pp_url' + (FORM_CH_ENTRY && label ? '&' + FORM_CH_ENTRY + '=' + encodeURIComponent(label) : '');
     return '<div class="fb"><div class="fb-t">有意見或問題？告訴老陳</div><p>覺得哪裡寫錯、看不懂，或有問題想問，都歡迎留言。不用登入，也可以匿名。好的問題會整理進辭典的問答區。</p>' +
