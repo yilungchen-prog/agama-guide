@@ -215,6 +215,31 @@
    "file": "content/ch25.html",
    "part": "延伸篇",
    "short": "世間應用：八大能力"
+  },
+  {
+   "id": "ch26",
+   "label": "第二十六章",
+   "title": "四念住完整版：把心帶回自己的地盤",
+   "file": "content/ch26.html",
+   "part": "進階篇",
+   "short": "四念住完整版",
+   "from": [
+    "ch5",
+    "ch9",
+    "ch10",
+    "ch11"
+   ]
+  },
+  {
+   "id": "ch27",
+   "label": "第二十七章",
+   "title": "八大能力完整版：修行與過日子的兩條腿",
+   "file": "content/ch27.html",
+   "part": "進階篇",
+   "short": "八大能力完整版",
+   "from": [
+    "ch25"
+   ]
   }
  ]
 }

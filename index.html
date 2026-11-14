@@ -308,10 +308,19 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .done span{opacity:0;transition:opacity .6s .6s}.done.in span{opacity:1}
 .home .done,.home h2::before{display:none}
 @media (prefers-reduced-motion:reduce){#bar::after{animation:none}.chapter h1.shine::after{display:none}.done .pt{transform:none;transition:none}.done span{opacity:1}}
+.deep{margin:32px 0 0;padding:16px;border:1px solid rgba(242,196,109,.5);border-radius:14px;background:rgba(242,196,109,.07)}
+.deep-t{font-family:var(--display);font-weight:700;color:var(--gold);font-size:18px;margin-bottom:8px}
+.deep-b{display:block;text-decoration:none;color:var(--ink);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-top:8px}
+.deep-b span{display:block;font-size:13px;color:var(--gold);letter-spacing:.08em}
+.deep-b b{font-family:var(--display);font-weight:600;line-height:1.5}
+.story.def{border-color:rgba(207,216,227,.45);background:linear-gradient(160deg,rgba(207,216,227,.08),rgba(17,36,61,.6))}
+.story.def .story-tag{background:#cfd8e3;color:#0c1a2e}
+.story.def .story-t{color:#e7edf3}
+.story.def ul{margin:6px 0 6px 1.2em;padding:0}.story.def li{margin:5px 0;line-height:1.8}
 @media print{
  :root{--bg:#fff;--panel:#fff;--ink:#111;--muted:#444;--gold:#7a5200;--cyan:#0b5f7a;--line:#bbb}
  html,body{background:#fff!important;color:#111!important}
- .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.done,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
+ .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.done,.deep,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
  .wrap,main{display:block!important;margin:0!important;padding:0!important;max-width:none!important}
  section.chapter[hidden]{display:none!important}
  .story,.stance,.ditem,.book,.qa,.g-card,.dgm,.part-intro,.tier{background:#fff!important;box-shadow:none!important;border-color:#bbb!important}
@@ -470,7 +479,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0323';
+  var APP_VER = '20261115-0337';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -509,7 +518,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', '<div class="done"><svg viewBox="0 0 84 60" aria-hidden="true"><path class="pt p2" d="M42 56 C20 50 10 34 14 22 C28 26 38 40 42 56 Z" fill="#e8a8b8"/><path class="pt p2" d="M42 56 C64 50 74 34 70 22 C56 26 46 40 42 56 Z" fill="#e8a8b8"/><path class="pt p3" d="M42 56 C30 42 32 18 42 4 C52 18 54 42 42 56 Z" fill="#f6c6d2"/><path class="pt" d="M8 56 Q42 46 76 56" stroke="#9cd68c" stroke-width="3" fill="none"/></svg><span>這一章讀完了</span></div>' + readingBox(c.id) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
+      sec.insertAdjacentHTML('beforeend', '<div class="done"><svg viewBox="0 0 84 60" aria-hidden="true"><path class="pt p2" d="M42 56 C20 50 10 34 14 22 C28 26 38 40 42 56 Z" fill="#e8a8b8"/><path class="pt p2" d="M42 56 C64 50 74 34 70 22 C56 26 46 40 42 56 Z" fill="#e8a8b8"/><path class="pt p3" d="M42 56 C30 42 32 18 42 4 C52 18 54 42 42 56 Z" fill="#f6c6d2"/><path class="pt" d="M8 56 Q42 46 76 56" stroke="#9cd68c" stroke-width="3" fill="none"/></svg><span>這一章讀完了</span></div>' + deepBox(c.id) + readingBox(c.id) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -523,7 +532,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span><a class="btn" href="#dict">名詞辭典與入門問答</a></div><p class="offline-tip">想沒網路時也能讀？用手機瀏覽器的「分享」→「加入主畫面」，看過的章節就會存在手機裡。也可以<a href="pdf/book.pdf" target="_blank" rel="noopener">下載全書 PDF</a>。</p></div>';
     var parts = [];
     chapters.forEach(function (c) { if (parts.indexOf(c.part) < 0) parts.push(c.part); });
-    var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，再把原始佛法用在情緒內耗、愛情與婚姻上。' };
+    var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，再把原始佛法用在情緒內耗、愛情與婚姻上。', '進階篇': '給想深入的人：重量級主題的完整長文，有故事、經典、案例和練習。' };
     parts.forEach(function (pt) {
       hh += '<div class="home-part"><h2>' + pt + '</h2>' + (DESC[pt] ? '<p class="home-desc">' + DESC[pt] + '</p>' : '') + '<div class="home-grid">';
       chapters.filter(function (c) { return c.part === pt; }).forEach(function (c) {
@@ -666,6 +675,13 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // ---------- 意見與提問（Google 表單）----------
   var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfqd1IkShDE87oaBEGSAlzNauugP36bHZKefv8IcRyTfJhnNA/viewform';
   var FORM_CH_ENTRY = 'entry.186048612'; // 預先填入「跟哪一章有關」的 entry 編號，例如 'entry.123456'
+  function deepBox(cid) {
+    var list = chapters.filter(function (c) { return (c.from || []).indexOf(cid) >= 0; });
+    if (!list.length) return '';
+    return '<div class="deep"><div class="deep-t">想再深入？</div>' + list.map(function (c) {
+      return '<a class="deep-b" href="#' + c.id + '"><span>' + c.part + '・' + c.label + '</span><b>' + esc(c.title) + '</b></a>';
+    }).join('') + '</div>';
+  }
   function readingBox(cid) {
     var list = books.filter(function (b) { return (b.chapters || []).indexOf(cid) >= 0; });
     if (!list.length) return '';
