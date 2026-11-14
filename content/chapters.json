@@ -6,7 +6,7 @@
    "title": "為什麼現代人需要原始佛法？——一部高精度的心理運作說明書",
    "file": "content/intro.html",
    "part": "入門篇",
-   "short": "導論"
+   "short": "為什麼學原始佛法"
   },
   {
    "id": "ch1",
@@ -14,7 +14,7 @@
    "title": "人生的診斷書——四聖諦（問題分析與解決框架）",
    "file": "content/ch1.html",
    "part": "入門篇",
-   "short": "四聖諦"
+   "short": "四聖諦：問題與解法"
   },
   {
    "id": "ch2",
@@ -22,7 +22,7 @@
    "title": "拆解「我」是誰——五蘊與六入處（認識身心的硬體與介面）",
    "file": "content/ch2.html",
    "part": "入門篇",
-   "short": "五蘊六入"
+   "short": "五蘊與六入處"
   },
   {
    "id": "ch3",
@@ -30,7 +30,7 @@
    "title": "宇宙與心理的底層演算法——緣起法（因果與系統思維）",
    "file": "content/ch3.html",
    "part": "入門篇",
-   "short": "緣起"
+   "short": "緣起：因果流水線"
   },
   {
    "id": "ch4",
@@ -38,7 +38,7 @@
    "title": "看清實相的兩把手術刀——三法印與「集、味、患、異、滅、離」",
    "file": "content/ch4.html",
    "part": "入門篇",
-   "short": "三法印"
+   "short": "三法印與觀察法"
   },
   {
    "id": "ch5",
@@ -46,7 +46,7 @@
    "title": "把佛法帶進日常——四念住與八正道（實踐與操作手冊）",
    "file": "content/ch5.html",
    "part": "入門篇",
-   "short": "念住正道"
+   "short": "四念住與八正道"
   },
   {
    "id": "ch6",
@@ -62,7 +62,7 @@
    "title": "業、輪迴與中道——佛陀如何看待人生的走向",
    "file": "content/ch7.html",
    "part": "入門篇",
-   "short": "業與中道"
+   "short": "業、輪迴與中道"
   },
   {
    "id": "ch8",
@@ -70,7 +70,7 @@
    "title": "修行路上的障礙與輔助工具——五蓋、根律儀與慈悲喜捨",
    "file": "content/ch8.html",
    "part": "入門篇",
-   "short": "五蓋慈心"
+   "short": "五蓋、根律儀、慈悲"
   },
   {
    "id": "end",
@@ -78,7 +78,7 @@
    "title": "從「被動反應的機器」走向「清醒自由的覺察者」",
    "file": "content/end.html",
    "part": "入門篇",
-   "short": "結語"
+   "short": "結語：整合地圖"
   },
   {
    "id": "ch9",
@@ -86,7 +86,7 @@
    "title": "身念住：把心錨在身體上",
    "file": "content/ch9.html",
    "part": "實修篇",
-   "short": "身念住"
+   "short": "身念住：從身體開始"
   },
   {
    "id": "ch10",
@@ -94,7 +94,7 @@
    "title": "受念住：在第一支箭之後停下來",
    "file": "content/ch10.html",
    "part": "實修篇",
-   "short": "受念住"
+   "short": "受念住：兩支箭"
   },
   {
    "id": "ch11",
@@ -102,7 +102,7 @@
    "title": "心念住與法念住：看天氣，也看氣象規律",
    "file": "content/ch11.html",
    "part": "實修篇",
-   "short": "心與法"
+   "short": "心念住與法念住"
   },
   {
    "id": "ch12",
@@ -110,7 +110,7 @@
    "title": "正見與正思惟：先校準導航，再出發",
    "file": "content/ch12.html",
    "part": "實修篇",
-   "short": "正見正思惟"
+   "short": "正見與正思惟"
   },
   {
    "id": "ch13",
@@ -118,7 +118,7 @@
    "title": "正語、正業、正命：不製造痛苦的生活底線",
    "file": "content/ch13.html",
    "part": "實修篇",
-   "short": "語業命"
+   "short": "正語、正業、正命"
   },
   {
    "id": "ch14",
@@ -126,7 +126,7 @@
    "title": "正精進、正念、正定：讓整條路持續運轉",
    "file": "content/ch14.html",
    "part": "實修篇",
-   "short": "精進念定"
+   "short": "精進、正念、正定"
   },
   {
    "id": "ch15",
@@ -134,7 +134,7 @@
    "title": "三學：戒定慧的整體地圖",
    "file": "content/ch15.html",
    "part": "實修篇",
-   "short": "三學"
+   "short": "戒定慧三學"
   },
   {
    "id": "ch16",
@@ -142,7 +142,7 @@
    "title": "五蘊深入：泡沫、水泡、陽焰、芭蕉、幻術",
    "file": "content/ch16.html",
    "part": "實修篇",
-   "short": "五蘊"
+   "short": "五蘊：五個比喻"
   },
   {
    "id": "ch17",
@@ -150,7 +150,7 @@
    "title": "十八界深入：我的世界是怎麼組成的？",
    "file": "content/ch17.html",
    "part": "實修篇",
-   "short": "十八界"
+   "short": "十八界：看見的零件"
   },
   {
    "id": "ch18",
@@ -158,7 +158,7 @@
    "title": "無記：佛陀刻意不回答的問題",
    "file": "content/ch18.html",
    "part": "解脫篇",
-   "short": "無記"
+   "short": "無記：佛陀不答"
   },
   {
    "id": "ch19",
@@ -166,7 +166,7 @@
    "title": "四沙門果：修行路上的四個里程碑",
    "file": "content/ch19.html",
    "part": "解脫篇",
-   "short": "四沙門果"
+   "short": "四沙門果：修行里程碑"
   },
   {
    "id": "ch20",
@@ -174,7 +174,7 @@
    "title": "涅槃：火熄滅之後的清涼",
    "file": "content/ch20.html",
    "part": "解脫篇",
-   "short": "涅槃"
+   "short": "涅槃：火的熄滅"
   },
   {
    "id": "ch21",
@@ -182,7 +182,7 @@
    "title": "心經、金剛經與原始佛法：一脈相承與後來的發展",
    "file": "content/ch21.html",
    "part": "延伸篇",
-   "short": "心經金剛經"
+   "short": "心經、金剛經對照"
   },
   {
    "id": "ch22",
@@ -190,7 +190,7 @@
    "title": "佛法與現代心理學：出世法能不能療癒入世的傷？",
    "file": "content/ch22.html",
    "part": "延伸篇",
-   "short": "佛法與心理學"
+   "short": "佛法與現代心理學"
   },
   {
    "id": "ch23",
@@ -198,7 +198,7 @@
    "title": "情緒內耗急救箱：六種內耗，六個出口",
    "file": "content/ch23.html",
    "part": "延伸篇",
-   "short": "內耗急救箱"
+   "short": "情緒內耗急救箱"
   },
   {
    "id": "ch24",
