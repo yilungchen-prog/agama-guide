@@ -208,7 +208,8 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .g-hubc span{font-size:14px;color:var(--cyan)}
 .g-cycle{display:flex;flex-direction:column;gap:10px}
 .g-cyc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;counter-reset:cy}
-.g-cyc li{margin:0;counter-increment:cy;position:relative}
+.g-cyc li{margin:0;counter-increment:cy;position:relative;display:flex}
+.g-cyc li>.g-card{flex:1}
 .g-cyc li .g-card{padding-left:36px}
 .g-cyc li::before{content:counter(cy);position:absolute;left:10px;top:12px;width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--bg);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:1}
 .g-back{text-align:center;color:var(--cyan);font-size:14px}
@@ -450,7 +451,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0256';
+  var APP_VER = '20261115-0306';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
