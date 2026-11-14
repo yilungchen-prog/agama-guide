@@ -88,7 +88,10 @@ body{font-size:18px}
 .chapter[hidden]{display:none}
 .chapter h1{font-size:clamp(30px,7.6vw,42px);line-height:1.4}
 .ch-label{font-size:16px;padding:3px 14px}
-.chapter h2{font-size:clamp(24px,6vw,28px);line-height:1.45;margin:52px 0 14px;padding-left:14px;border-left:5px solid var(--gold)}
+.chapter h2{font-size:clamp(24px,6vw,28px);line-height:1.45;margin:52px 0 14px;padding-left:14px;position:relative}
+.chapter h2::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:5px;background:var(--gold);transform-origin:top;transform:scaleY(0);transition:transform .7s ease-out}
+.chapter h2.in::before,.noio .chapter h2::before{transform:none}
+@media (prefers-reduced-motion:reduce){.chapter h2::before{transform:none;transition:none}}
 .chapter h3{font-size:clamp(20px,5.2vw,22px)}
 figure{margin:16px -18px 26px;position:relative;cursor:zoom-in}
 figure img{border-radius:0;border-left:none;border-right:none}
@@ -290,15 +293,31 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .mini{margin:18px auto;max-width:360px;padding:8px 6px 4px;border:1px solid var(--line);border-radius:14px;background:rgba(17,36,61,.6)}
 .mini::after{display:none}
 .mini svg{display:block;width:100%;height:auto;font-family:var(--body,inherit)}
+.mini svg{overflow:hidden}
+#bar{background:linear-gradient(90deg,rgba(242,196,109,.35),var(--gold))}
+#bar::after{content:"";position:absolute;right:-4px;top:-2.5px;width:8px;height:8px;border-radius:50%;background:#fff3c4;box-shadow:0 0 8px 3px rgba(242,196,109,.8);animation:barglow 2s ease-in-out infinite}
+@keyframes barglow{50%{box-shadow:0 0 4px 1px rgba(242,196,109,.5)}}
+.chapter h1{position:relative;overflow:hidden}
+.chapter h1.shine::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:35%;background:linear-gradient(100deg,transparent,rgba(255,240,200,.35),transparent);transform:skewX(-18deg);animation:shine 1.4s ease-out .2s 1 forwards;pointer-events:none}
+@keyframes shine{to{left:120%}}
+.done{text-align:center;margin:36px 0 0;color:var(--gold);font-family:var(--display);font-size:17px;font-weight:600}
+.done svg{display:block;width:84px;height:60px;margin:0 auto 6px}
+.done .pt{transform-box:fill-box;transform-origin:50% 100%;transform:scale(0);transition:transform .7s cubic-bezier(.3,1.5,.6,1)}
+.done.in .pt{transform:none}
+.done .p2{transition-delay:.15s}.done .p3{transition-delay:.3s}
+.done span{opacity:0;transition:opacity .6s .6s}.done.in span{opacity:1}
+.home .done,.home h2::before{display:none}
+@media (prefers-reduced-motion:reduce){#bar::after{animation:none}.chapter h1.shine::after{display:none}.done .pt{transform:none;transition:none}.done span{opacity:1}}
 @media print{
  :root{--bg:#fff;--panel:#fff;--ink:#111;--muted:#444;--gold:#7a5200;--cyan:#0b5f7a;--line:#bbb}
  html,body{background:#fff!important;color:#111!important}
- .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
+ .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.done,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
  .wrap,main{display:block!important;margin:0!important;padding:0!important;max-width:none!important}
  section.chapter[hidden]{display:none!important}
  .story,.stance,.ditem,.book,.qa,.g-card,.dgm,.part-intro,.tier{background:#fff!important;box-shadow:none!important;border-color:#bbb!important}
  h1,h2,h3,p,li{color:#111!important}
  h2{break-after:avoid}
+ .chapter h2::before{transform:none!important}
  section.chapter+section.chapter{break-before:page}
  .story,.dgm,.book,.ditem{break-inside:avoid}
  .term{text-decoration:none!important}
@@ -451,7 +470,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0313';
+  var APP_VER = '20261115-0323';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -490,7 +509,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', readingBox(c.id) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
+      sec.insertAdjacentHTML('beforeend', '<div class="done"><svg viewBox="0 0 84 60" aria-hidden="true"><path class="pt p2" d="M42 56 C20 50 10 34 14 22 C28 26 38 40 42 56 Z" fill="#e8a8b8"/><path class="pt p2" d="M42 56 C64 50 74 34 70 22 C56 26 46 40 42 56 Z" fill="#e8a8b8"/><path class="pt p3" d="M42 56 C30 42 32 18 42 4 C52 18 54 42 42 56 Z" fill="#f6c6d2"/><path class="pt" d="M8 56 Q42 46 76 56" stroke="#9cd68c" stroke-width="3" fill="none"/></svg><span>這一章讀完了</span></div>' + readingBox(c.id) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -880,12 +899,20 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       $('#resume').innerHTML = lc ? '<a class="btn" href="#' + lc.id + '">繼續閱讀：' + lc.label + '</a>' : '';
     }
   }
+  // ---------- 小標題金線、讀完蓮花 ----------
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -12% 0px' }) : null;
+  if (!io) document.documentElement.classList.add('noio');
+  function watchFx(sec) { if (io) $$('h2, .done', sec).forEach(function (el) { if (!el.classList.contains('in')) io.observe(el); }); }
+  function shineTitle(sec) { var h = sec && sec.querySelector(':scope > h1'); if (!h) return; h.classList.remove('shine'); void h.offsetWidth; h.classList.add('shine'); }
   function route() {
     var h = decodeURIComponent((location.hash || '').slice(1));
     var target = h ? document.getElementById(h) : null;
     var sec = target ? target.closest('.chapter') : null;
     if (!sec) sec = secs[0];
     showChapter(sec.getAttribute('data-ch'));
+    watchFx(sec); shineTitle(sec);
     if (pendingY !== null) { window.scrollTo(0, pendingY); pendingY = null; }
     else if (target && target.tagName === 'H2') target.scrollIntoView(); else window.scrollTo(0, 0);
     onScroll();
