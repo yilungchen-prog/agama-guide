@@ -262,6 +262,9 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .story-t{font-family:var(--display);font-size:19px;font-weight:700;color:var(--gold);line-height:1.4}
 .story p{margin:8px 0}
 .story .story-k{color:var(--cyan);font-weight:700}
+.fb{margin:34px 0 10px;padding:16px;border:1px dashed rgba(242,196,109,.5);border-radius:14px;text-align:center}
+.fb-t{font-family:var(--display);font-weight:900;font-size:19px;color:var(--gold)}
+.fb p{font-size:15px;color:var(--muted);margin:8px 0 12px}
 .story.exp{border-color:rgba(156,214,140,.5);background:linear-gradient(160deg,rgba(156,214,140,.10),rgba(17,36,61,.6))}
 .story.exp .story-tag{background:#9cd68c;color:#10230b}
 .story.exp .story-t{color:#b5e3a8}
@@ -402,7 +405,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261114-2259';
+  var APP_VER = '20261114-2318';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -440,7 +443,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', chapnav(i));
+      sec.insertAdjacentHTML('beforeend', feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -592,6 +595,14 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
 
   // ---------- 名詞小卡 ----------
   var termRe = null, termOf = {}, qaList = [], gcats = [];
+  // ---------- 意見與提問（Google 表單）----------
+  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfqd1IkShDE87oaBEGSAlzNauugP36bHZKefv8IcRyTfJhnNA/viewform';
+  var FORM_CH_ENTRY = ''; // 預先填入「跟哪一章有關」的 entry 編號，例如 'entry.123456'
+  function feedbackBox(label) {
+    var u = FORM_URL + '?usp=pp_url' + (FORM_CH_ENTRY && label ? '&' + FORM_CH_ENTRY + '=' + encodeURIComponent(label) : '');
+    return '<div class="fb"><div class="fb-t">有意見或問題？告訴老陳</div><p>覺得哪裡寫錯、看不懂，或有問題想問，都歡迎留言。不用登入，也可以匿名。好的問題會整理進辭典的問答區。</p>' +
+      '<a class="btn pri" href="' + u + '" target="_blank" rel="noopener">寫下我的意見</a></div>';
+  }
   var TSKIP = SKIP + ',.story,.kw,.dict-list,.qa-a';
   function terms(sec) {
     if (sec.classList.contains('home')) return;
@@ -673,7 +684,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       '<h2 id="dict-1">一、名詞辭典</h2><div class="dcats"><button type="button" class="dcat on" data-c="">全部</button>';
     cats.forEach(function (c) { h += '<button type="button" class="dcat" data-c="' + esc(c) + '">' + esc(c) + '</button>'; });
     h += '</div><div class="dict-list"></div><p class="dict-none" hidden>找不到符合的名詞。</p>' +
-      '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>';
+      '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>' + feedbackBox('辭典與問答');
     sec.innerHTML = h;
     return sec;
   }
