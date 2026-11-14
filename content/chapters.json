@@ -300,6 +300,28 @@
     "ch15",
     "end"
    ]
+  },
+  {
+   "id": "ch33",
+   "label": "第三十三章",
+   "title": "用原始佛法讀心經：兩百多字裡的阿含經",
+   "file": "content/ch33.html",
+   "part": "進階篇",
+   "short": "讀心經",
+   "from": [
+    "ch21"
+   ]
+  },
+  {
+   "id": "ch34",
+   "label": "第三十四章",
+   "title": "用原始佛法讀金剛經：六句名句的阿含根源",
+   "file": "content/ch34.html",
+   "part": "進階篇",
+   "short": "讀金剛經",
+   "from": [
+    "ch21"
+   ]
   }
  ]
 }
