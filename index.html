@@ -227,6 +227,35 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .g-box{width:22px;height:22px;flex:none;border:2px solid var(--gold);border-radius:6px;margin-top:3px}
 .g-banner{border:1.5px solid var(--c);color:var(--c);border-radius:999px;padding:8px 16px;text-align:center;font-weight:700;font-size:15.5px;line-height:1.6;background:rgba(255,255,255,.03)}
 .g-label{font-size:14px;font-weight:700;color:var(--c);letter-spacing:.08em;margin-bottom:-4px}
+.kw{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 22px}
+.kw-h{font-size:13px;color:var(--muted);letter-spacing:.1em;margin-right:2px}
+.kw .kw-chip{text-decoration:none;border:1px solid rgba(98,208,239,.45);background:rgba(98,208,239,.08);color:var(--cyan);border-radius:999px;padding:4px 12px;font-size:14.5px;line-height:1.4}
+.kw .kw-chip:hover{background:rgba(98,208,239,.18)}
+.dict-btn{color:var(--gold)}
+.dsearch{position:sticky;top:var(--dq-top,0);margin:6px 0 18px}
+.dsearch input{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid rgba(242,196,109,.45);border-radius:12px;color:var(--ink);font:inherit;font-size:16px;padding:11px 14px}
+.dsearch input:focus{outline:none;border-color:var(--gold)}
+.dcats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.dcat{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--muted);border-radius:999px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer}
+.dcat.on{background:var(--gold);border-color:var(--gold);color:#1a1205;font-weight:700}
+.ditem{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 10px}
+.dterm{font-family:var(--display);font-weight:900;font-size:20px;color:var(--gold);display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+.dpali{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted)}
+.dcatl{margin-left:auto;font-family:var(--body);font-weight:500;font-size:12px;color:var(--cyan);border:1px solid rgba(98,208,239,.35);border-radius:999px;padding:1px 8px}
+.ddef{margin:6px 0 8px!important;font-size:16px;line-height:1.8}
+.dwhere{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.dwl{font-size:12.5px;color:var(--muted);margin:0 2px 0 4px}
+.dwhere a{font-size:13px;text-decoration:none;border-radius:999px;padding:2px 9px;border:1px solid rgba(98,208,239,.35);color:var(--cyan)}
+.dwhere a.dsee{background:var(--gold);border-color:var(--gold);color:#1a1205;font-weight:700}
+.dict-none,.qa-none{color:var(--muted)}
+.qa-cat{font-size:13px;letter-spacing:.15em;color:var(--gold);margin:18px 0 8px}
+.qa{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin:0 0 10px;padding:0 14px}
+.qa summary{cursor:pointer;font-weight:700;font-size:17px;line-height:1.6;padding:12px 0;list-style:none;display:flex;gap:10px}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::before{content:"問";flex:none;display:inline-grid;place-items:center;width:24px;height:24px;margin-top:2px;border-radius:50%;background:var(--gold);color:#1a1205;font-size:13px}
+.qa[open] summary{color:var(--gold)}
+.qa-a{padding:0 0 10px;border-top:1px dashed rgba(242,196,109,.3)}
+.qa-a p{font-size:16px;line-height:1.85}
 .story{margin:26px 0;padding:16px 16px 12px;border:1px solid rgba(242,196,109,.45);border-radius:14px;background:linear-gradient(160deg,rgba(242,196,109,.10),rgba(17,36,61,.6))}
 .story-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .story-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:#1a1205;font-size:12.5px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:999px}
@@ -307,9 +336,10 @@ header.top{gap:10px}
 /* 兩層導覽：篇 → 主題 */
 .topbar{position:sticky;top:0;z-index:20;background:rgba(12,26,46,.96);backdrop-filter:blur(6px)}
 .topbar header.top{position:static;background:none}
-.parts{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
+.parts{display:flex;gap:2px;padding:8px 8px 0;overflow-x:auto;scrollbar-width:none}
 .parts::-webkit-scrollbar{display:none}
-.part-btn{flex:1 0 auto;text-align:center;text-decoration:none;font:inherit;font-size:15px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:6px 10px 7px;cursor:pointer}
+.part-btn{flex:1 0 auto;text-align:center;text-decoration:none;font:inherit;font-size:15px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:6px 6px 7px;cursor:pointer}
+@media (max-width:380px){.part-btn{font-size:14px;padding:6px 4px 7px}}
 .part-btn.on{color:var(--gold);border-bottom-color:var(--gold)}
 .topbar .tabs{position:static;border-top:1px solid var(--line);padding:8px 16px}
 .tab{display:flex;flex-direction:column;align-items:center;line-height:1.25;padding:5px 14px 6px;border-radius:12px}
@@ -358,7 +388,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   };
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261114-2057';
+  var APP_VER = '20261114-2130';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -376,9 +406,9 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   function getJSON(u) { return fetch(bust(u), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); }
   function getText(u) { return fetch(bust(u), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.text(); }); }
 
-  Promise.all([getJSON('content/chapters.json'), getJSON('content/glossary.json'), getJSON('content/drills.json'), getJSON('content/diagrams.json')])
+  Promise.all([getJSON('content/chapters.json'), getJSON('content/glossary.json'), getJSON('content/drills.json'), getJSON('content/diagrams.json'), getJSON('content/qa.json').catch(function () { return { qa: [] }; })])
     .then(function (r) {
-      chapters = r[0].chapters; glossary = r[1].terms; drills = r[2]; diagrams = r[3].diagrams;
+      chapters = r[0].chapters; glossary = r[1].terms; drills = r[2]; diagrams = r[3].diagrams; qaList = r[4].qa || []; gcats = r[1]['分類'] || [];
       return Promise.all(chapters.map(function (c) { return getText(c.file); }));
     })
     .then(build)
@@ -407,7 +437,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     var home = document.createElement('section');
     home.className = 'chapter home'; home.setAttribute('data-ch', 'home'); home.hidden = true;
     var hh = '<div class="cover">' + LOTUS_BIG + '<h1 id="home">老陳的原始佛學指南</h1><p class="cover-sub">回到最早的經典，用理性理解，在生活中驗證</p>' +
-      '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span></div></div>';
+      '<div class="cover-act"><a class="btn pri" href="#' + chapters[0].id + '">從導論開始讀</a><span id="resume"></span><a class="btn" href="#dict">名詞辭典與入門問答</a></div></div>';
     var parts = [];
     chapters.forEach(function (c) { if (parts.indexOf(c.part) < 0) parts.push(c.part); });
     var DESC = { '入門篇': '一張完整的原始佛法地圖：從四聖諦到五蓋，打好地基。', '實修篇': '把四念住、八正道、五蘊、十八界拆開來一步步練。', '解脫篇': '這條路通向哪裡？佛陀不回答的問題、修行的里程碑與涅槃。', '延伸篇': '對照後期經典與現代心理學，看清相通與不同。' };
@@ -422,13 +452,19 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     main.insertBefore(home, main.firstChild);
     var partsHtml = '<a class="part-btn home-btn" href="#home" data-p="home">首頁</a>';
     parts.forEach(function (pt) { partsHtml += '<button type="button" class="part-btn" data-p="' + pt + '">' + pt + '</button>'; });
+    partsHtml += '<a class="part-btn dict-btn" href="#dict" data-p="dict">辭典</a>';
     $('#parts').innerHTML = partsHtml;
     $('#parts').addEventListener('click', function (e) { var b = e.target.closest('button.part-btn'); if (b) showPart(b.getAttribute('data-p')); });
     main.insertAdjacentHTML('beforeend', '<footer>老陳的原始佛學指南 · 左右滑動可切換章節 · 圖解可直接點選跳轉</footer>');
     $('#tabs').innerHTML = tabsHtml; $('#toclist').innerHTML = tocHtml;
     secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
     $$('.dgm').forEach(renderDiagram);
-    secs.forEach(function (s) { labelize(s); suttaLinks(s); xrefs(s); terms(s); });
+    var dict = buildDict(); main.insertBefore(dict, main.querySelector('footer'));
+    tocHtml += '<li class="toc-part">工具</li><li><a class="tc" href="#dict"><span>辭典</span>名詞辭典與入門問答</a></li>';
+    $('#toclist').innerHTML = tocHtml;
+    secs = $$('.chapter'); ids = secs.map(function (s) { return s.getAttribute('data-ch'); });
+    secs.forEach(function (s) { if (s !== dict) { labelize(s); suttaLinks(s); xrefs(s); terms(s); keywords(s); } });
+    fillDict(dict);
     $$('.drill').forEach(renderDrill);
     route();
   }
@@ -547,9 +583,15 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   }
 
   // ---------- 名詞小卡 ----------
-  var termRe = null, termOf = {};
+  var termRe = null, termOf = {}, qaList = [], gcats = [];
+  var TSKIP = SKIP + ',.story,.kw,.dict-list,.qa-a';
   function terms(sec) {
     if (sec.classList.contains('home')) return;
+    linkTerms(sec, TSKIP);
+    // 故事框、圖解各自算一個範圍：裡面的名詞也標一次
+    $$('.story, .dgm', sec).forEach(function (el) { linkTerms(el, 'H1,H2,H3,A,BUTTON,FIGURE,.drill'); });
+  }
+  function linkTerms(sec, skipSel) {
     if (!termRe) {
       var keys = [];
       glossary.forEach(function (g, i) { g.match.forEach(function (k) { termOf[k] = i; keys.push(k); }); });
@@ -562,7 +604,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       acceptNode: function (n) {
         if (n.nodeType === 1) {
           if (n.tagName === 'H2') { used = {}; skipBlock = /專有名詞/.test(n.textContent); return NodeFilter.FILTER_REJECT; }
-          return n.matches(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+          return n.matches(skipSel) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
         }
         return NodeFilter.FILTER_ACCEPT;
       }
@@ -590,6 +632,102 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       t.parentNode.replaceChild(frag, t);
     });
   }
+  // ---------- 本章關鍵詞 ----------
+  function keywords(sec) {
+    var cid = sec.getAttribute('data-ch'); if (!chapterOf(cid)) return;
+    var h1 = sec.querySelector(':scope > h1'); if (!h1) return;
+    var text = sec.textContent, pick = [], seen = {};
+    function first(g) { var b = -1; g.match.forEach(function (k) { var x = text.indexOf(k); if (x >= 0 && (b < 0 || x < b)) b = x; }); return b; }
+    function count(g) { var n = 0; g.match.forEach(function (k) { n += text.split(k).length - 1; }); return n; }
+    var own = [];
+    glossary.forEach(function (g, i) { if (g.see && g.see.split('-')[0] === cid) { var f = first(g); own.push([f < 0 ? 1e9 : f, i]); } });
+    own.sort(function (a, b) { return a[0] - b[0]; }).forEach(function (x) { if (pick.length < 5) { pick.push(x[1]); seen[x[1]] = 1; } });
+    if (pick.length < 5) {
+      var rest = [];
+      glossary.forEach(function (g, i) { if (!seen[i] && g.cat !== '經典與人物') { var n = count(g); if (n >= 2) rest.push([n, i]); } });
+      rest.sort(function (a, b) { return b[0] - a[0]; }).forEach(function (x) { if (pick.length < 5) pick.push(x[1]); });
+    }
+    if (!pick.length) return;
+    var h = '<div class="kw"><span class="kw-h">本章關鍵詞</span>';
+    pick.forEach(function (i) { h += '<button type="button" class="term kw-chip" data-g="' + i + '">' + esc(glossary[i].term) + '</button>'; });
+    h1.insertAdjacentHTML('afterend', h + '</div>');
+  }
+
+  // ---------- 辭典與問答頁 ----------
+  function buildDict() {
+    var sec = document.createElement('section');
+    sec.className = 'chapter dict'; sec.setAttribute('data-ch', 'dict'); sec.hidden = true;
+    var cats = gcats.length ? gcats : [];
+    glossary.forEach(function (g) { if (g.cat && cats.indexOf(g.cat) < 0) cats.push(g.cat); });
+    var h = '<h1 id="dict"><span class="ch-label">工具</span><br>名詞辭典與入門問答</h1>' +
+      '<p class="part-intro">看不懂的名詞，在這裡一次查清楚。每個名詞都附上它出現在哪幾章，點了就能跳過去讀。下面還有入門者最常問的問題。</p>' +
+      '<div class="dsearch"><input id="dq" type="search" placeholder="搜尋名詞或問題，例如：無我、涅槃、吃素" autocomplete="off"></div>' +
+      '<h2 id="dict-1">一、名詞辭典</h2><div class="dcats"><button type="button" class="dcat on" data-c="">全部</button>';
+    cats.forEach(function (c) { h += '<button type="button" class="dcat" data-c="' + esc(c) + '">' + esc(c) + '</button>'; });
+    h += '</div><div class="dict-list"></div><p class="dict-none" hidden>找不到符合的名詞。</p>' +
+      '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>';
+    sec.innerHTML = h;
+    return sec;
+  }
+  function fillDict(sec) {
+    var order = gcats.length ? gcats : [];
+    var idx = glossary.map(function (g, i) { return i; }).sort(function (a, b) {
+      var ca = order.indexOf(glossary[a].cat), cb = order.indexOf(glossary[b].cat);
+      return ca - cb || 0;
+    });
+    var lh = '';
+    idx.forEach(function (i) {
+      var g = glossary[i], where = [];
+      secs.forEach(function (s) {
+        var c = chapterOf(s.getAttribute('data-ch'));
+        if (c && s.querySelector('.term[data-g="' + i + '"]:not(.kw-chip)')) where.push(c);
+      });
+      var see = g.see && document.getElementById(g.see) ? g.see : '';
+      lh += '<div class="ditem" data-c="' + esc(g.cat || '') + '" data-k="' + esc((g.term + ' ' + g.match.join(' ') + ' ' + (g.pali || '') + ' ' + g.def).toLowerCase()) + '">' +
+        '<div class="dterm">' + esc(g.term) + (g.pali ? '<span class="dpali">' + esc(g.pali) + '</span>' : '') + '<span class="dcatl">' + esc(g.cat || '') + '</span></div>' +
+        '<p class="ddef">' + esc(g.def) + '</p>' +
+        ((where.length || see) ? '<div class="dwhere">' + (see ? '<a class="xref dsee" href="#' + see + '">看詳細：' + chapterOf(see.split('-')[0]).label + '</a>' : '') +
+          (where.length ? '<span class="dwl">出現在</span>' + where.map(function (c) { return '<a class="xref dch" href="#' + c.id + '">' + esc(c.short || c.label) + '</a>'; }).join('') : '') + '</div>' : '') +
+        '</div>';
+    });
+    $('.dict-list', sec).innerHTML = lh;
+    var qh = '', lastCat = null;
+    qaList.forEach(function (q) {
+      if (q.cat !== lastCat) { qh += '<div class="qa-cat">' + esc(q.cat) + '</div>'; lastCat = q.cat; }
+      qh += '<details class="qa" data-k="' + esc((q.q + ' ' + q.a.join(' ')).toLowerCase()) + '"><summary>' + esc(q.q) + '</summary><div class="qa-a">' +
+        q.a.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div></details>';
+    });
+    $('.qa-list', sec).innerHTML = qh;
+    xrefs(sec); suttaLinks(sec);
+    $$('.qa-a', sec).forEach(function (el) { linkTerms(el, SKIP); });
+    var cat = '';
+    function apply() {
+      var q = ($('#dq').value || '').trim().toLowerCase(), nd = 0, nq = 0;
+      $$('.ditem', sec).forEach(function (d) {
+        var ok = (!cat || d.getAttribute('data-c') === cat) && (!q || d.getAttribute('data-k').indexOf(q) >= 0);
+        d.hidden = !ok; if (ok) nd++;
+      });
+      $$('.qa', sec).forEach(function (d) {
+        var ok = !q || d.getAttribute('data-k').indexOf(q) >= 0;
+        d.hidden = !ok; if (ok) nq++;
+        if (q && ok) d.open = true;
+      });
+      $$('.qa-cat', sec).forEach(function (c) {
+        var n = c.nextElementSibling, any = false;
+        while (n && !n.classList.contains('qa-cat')) { if (!n.hidden) any = true; n = n.nextElementSibling; }
+        c.hidden = !any;
+      });
+      $('.dict-none', sec).hidden = nd > 0; $('.qa-none', sec).hidden = nq > 0;
+    }
+    $('#dq').addEventListener('input', apply);
+    $('.dcats', sec).addEventListener('click', function (e) {
+      var b = e.target.closest('.dcat'); if (!b) return;
+      cat = b.getAttribute('data-c');
+      $$('.dcat', sec).forEach(function (x) { x.classList.toggle('on', x === b); });
+      apply();
+    });
+  }
+
   var sheet = $('#sheet');
   function openSheet(g) {
     var e = glossary[g];
@@ -634,8 +772,8 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   scrim.addEventListener('click', function () { setOpen(false); });
   toc.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
 
-  function showPart(pt, atHome) {
-    $$('.part-btn').forEach(function (b) { var p = b.getAttribute('data-p'); b.classList.toggle('on', atHome ? p === 'home' : p === pt); });
+  function showPart(pt, mark) {
+    $$('.part-btn').forEach(function (b) { var p = b.getAttribute('data-p'); b.classList.toggle('on', mark ? p === mark : p === pt); });
     $$('.tab').forEach(function (a) { a.hidden = a.getAttribute('data-part') !== pt; });
     var t = $('#tabs'); if (t) t.scrollLeft = 0;
     var on = $('.tab.on:not([hidden])'); if (on) t.scrollLeft = on.offsetLeft - t.clientWidth / 2 + on.offsetWidth / 2;
@@ -646,13 +784,13 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     var sec = secs[ids.indexOf(ch)];
     secs.forEach(function (s) { s.hidden = (s !== sec); });
     var cpart = chapterOf(ch) ? chapterOf(ch).part : chapters[0].part;
-    showPart(cpart, ch === 'home');
+    showPart(cpart, (ch === 'home' || ch === 'dict') ? ch : null);
     $$('.tab').forEach(function (a) {
       var on = a.getAttribute('data-ch') === ch; a.classList.toggle('on', on);
       if (on) { var p = a.parentNode; p.scrollTo({ left: a.offsetLeft - p.clientWidth / 2 + a.offsetWidth / 2, behavior: 'smooth' }); }
     });
     heads = $$(':scope > h1, :scope > h2', sec); curCh = ch; lastHead = null;
-    var cc = chapterOf(ch); $('#where').textContent = cc ? cc.label : '';
+    var cc = chapterOf(ch); $('#where').textContent = cc ? cc.label : (ch === 'dict' ? '辭典' : '');
     if (cc) { try { localStorage.setItem('lastCh', ch); } catch (e) {} }
     if (ch === 'home') {
       var last = null; try { last = localStorage.getItem('lastCh'); } catch (e) {}
@@ -695,8 +833,9 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     if (sx === null || lb.classList.contains('open') || sheet.classList.contains('open')) return;
     var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
     if (Math.abs(dx) > 90 && Math.abs(dy) < 50 && Date.now() - st < 700) {
+      if (curCh === 'dict') return;
       var i = ids.indexOf(curCh) + (dx < 0 ? 1 : -1);
-      if (i >= 0 && i < ids.length) location.hash = ids[i];
+      if (i >= 0 && i < ids.length && ids[i] !== 'dict') location.hash = ids[i];
     }
   }, { passive: true });
 
