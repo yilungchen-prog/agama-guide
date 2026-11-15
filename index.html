@@ -497,7 +497,24 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0826';
+  var APP_VER = '20261115-1622';
+  // ---------- 訪客統計（GoatCounter：不用 cookie、不需同意視窗）----------
+  var GC_CODE = 'oldchenbuddha';
+  (function () {
+    if (/^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname) || location.protocol === 'file:') return;
+    var sc = document.createElement('script'); sc.async = true; sc.src = 'https://gc.zgo.at/count.js';
+    sc.setAttribute('data-goatcounter', 'https://' + GC_CODE + '.goatcounter.com/count');
+    sc.setAttribute('data-goatcounter-settings', '{"no_onload": true}');
+    document.head.appendChild(sc);
+  })();
+  function track(path, title, isEvent) {
+    var n = 0;
+    (function tryIt() {
+      var g = window.goatcounter;
+      if (g && g.count) { try { g.count({ path: path, title: title, event: !!isEvent }); } catch (e) {} return; }
+      if (++n < 40) setTimeout(tryIt, 250);
+    })();
+  }
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -953,6 +970,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     centerTab();
     heads = $$(':scope > h1, :scope > h2', sec); curCh = ch; lastHead = null;
     var tc = chapterOf(ch); document.title = tc ? tc.label + '・' + (tc.short || tc.title) + '｜老陳的原始佛學指南' : (ch === 'dict' ? '名詞辭典與入門問答｜老陳的原始佛學指南' : '老陳的原始佛學指南：理性修佛篇');
+    track('/' + ch, document.title);
     var cc = chapterOf(ch); $('#where').textContent = cc ? cc.label : (ch === 'dict' ? '辭典' : '');
     if (cc) { try { localStorage.setItem('lastCh', ch); } catch (e) {} }
     if (ch === 'home') {
@@ -993,6 +1011,14 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       lastHead = cur;
     }
   }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a, button'); if (!a) return;
+    var h = a.getAttribute('href') || '', m = h.match(/^pdf\/([^?]+)\.pdf/);
+    if (m) return track('下載PDF-' + m[1], '下載 PDF：' + m[1], true);
+    if (a.classList.contains('share-go')) return track('分享-系統-' + curCh, '分享（系統）', true);
+    if (a.classList.contains('share-line')) return track('分享-LINE-' + curCh, '分享（LINE）', true);
+    if (a.classList.contains('share-copy')) return track('分享-複製-' + curCh, '分享（複製連結）', true);
+  }, true);
   window.addEventListener('hashchange', route);
   window.addEventListener('scroll', onScroll, { passive: true });
 
