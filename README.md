@@ -166,6 +166,11 @@
 - 排除自己的瀏覽：在自己每台手機／電腦的瀏覽器打開一次 `https://yilungchen-prog.github.io/agama-guide/#toggle-goatcounter`，之後這個瀏覽器就不計入（再開一次會恢復）。
 - 來源追蹤：在 YouTube、方格子貼網址時可以加 `?utm_source=youtube`、`?utm_source=vocus`，後台的「來源」就會分得清楚。
 
+## Google Search Console
+
+- 驗證方式：index.html `<head>` 裡的 `google-site-verification` meta 標記（網址前置字元資源 https://yilungchen-prog.github.io/agama-guide/）。這行不能刪，刪了會失去驗證。
+- 網站地圖：sitemap.xml（已在 Search Console 提交）。
+
 ## 分享與搜尋（推廣準備）
 
 - `index.html` 的 `<head>`：網站說明（description）、分享預覽（og:title／og:description／og:image，圖在 `icons/og.png`，1200×630）。
