@@ -153,3 +153,12 @@
 - ch8〈慈心練習，讓正面情緒慢慢累積〉：Fredrickson 等人（2008），《Journal of Personality and Social Psychology》
 - ch9〈正念到底有沒有用？最嚴格的整理怎麼說〉：Goyal 等人（2014），《JAMA Internal Medicine》統合分析
 - ch31 慢速呼吸：Zaccaro 等人（2018），《Frontiers in Human Neuroscience》
+
+
+## 分享與搜尋（推廣準備）
+
+- `index.html` 的 `<head>`：網站說明（description）、分享預覽（og:title／og:description／og:image，圖在 `icons/og.png`，1200×630）。
+- 讀哪一章，瀏覽器分頁標題就顯示「第X章・章名｜老陳的原始佛學指南」。
+- 每章結尾「覺得有用？分享這一章」：分享給朋友（手機系統分享選單）、用 LINE 傳、複製連結；連結會直接打開那一章（`#ch..`）。
+- `sitemap.xml`：首頁與所有 PDF；可到 Google Search Console 提交。新增章節後要重新產生（`chapters.json` 的每一章 PDF）。
+- 注意：網站是單頁式，分享預覽一律顯示整個網站的封面圖，不會依章節變化。

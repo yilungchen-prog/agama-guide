@@ -5,6 +5,18 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>老陳的原始佛學指南：理性修佛篇</title>
+<meta name="description" content="用原始佛法（阿含經）看懂煩惱怎麼來、怎麼停。理性修佛：用現代科學檢驗，在生活中驗證。免費閱讀，從入門到進階，附故事、動畫與每天做得到的練習。">
+<link rel="canonical" href="https://yilungchen-prog.github.io/agama-guide/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="老陳的原始佛學指南">
+<meta property="og:title" content="老陳的原始佛學指南：理性修佛篇">
+<meta property="og:description" content="用原始佛法（阿含經）看懂煩惱怎麼來、怎麼停。理性修佛：用現代科學檢驗，在生活中驗證。免費閱讀，從入門到進階，附故事、動畫與每天做得到的練習。">
+<meta property="og:url" content="https://yilungchen-prog.github.io/agama-guide/">
+<meta property="og:image" content="https://yilungchen-prog.github.io/agama-guide/icons/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c1a2e">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -317,10 +329,16 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .story.def .story-tag{background:#cfd8e3;color:#0c1a2e}
 .story.def .story-t{color:#e7edf3}
 .story.def ul{margin:6px 0 6px 1.2em;padding:0}.story.def li{margin:5px 0;line-height:1.8}
+.share{margin:28px 0 0;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center}
+.share-t{font-family:var(--display);font-weight:700;color:var(--gold);font-size:17px;margin-bottom:10px}
+.share .btn{margin:4px 2px}
+.share-line{background:#06c755!important;border-color:#06c755!important;color:#fff!important}
+.share-msg{display:block;font-size:13px;color:var(--cyan);min-height:1.2em;margin-top:4px}
+.home .share{display:none}
 @media print{
  :root{--bg:#fff;--panel:#fff;--ink:#111;--muted:#444;--gold:#7a5200;--cyan:#0b5f7a;--line:#bbb}
  html,body{background:#fff!important;color:#111!important}
- .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.done,.deep,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
+ .topbar,#bar,#scrim,#toc,#sheet,#back,#lb,.upd,.mini,.done,.deep,.share,.kw,.drill,.fb,.rd,.pr,.chapnav,footer,.dsearch,.dcats{display:none!important}
  .wrap,main{display:block!important;margin:0!important;padding:0!important;max-width:none!important}
  section.chapter[hidden]{display:none!important}
  .story,.stance,.ditem,.book,.qa,.g-card,.dgm,.part-intro,.tier{background:#fff!important;box-shadow:none!important;border-color:#bbb!important}
@@ -479,7 +497,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261115-0738';
+  var APP_VER = '20261115-0826';
   function bust(u) { return u + (u.indexOf('?') < 0 ? '?' : '&') + 'v=' + APP_VER; }
   function checkUpdate() {
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
@@ -518,7 +536,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       if (h1) { h1.id = c.id; h1.innerHTML = '<span class="ch-label">' + c.label + '</span><br>' + c.title; }
       var sub = '';
       $$('h2', sec).forEach(function (h, j) { h.id = c.id + '-' + (j + 1); sub += '<li><a href="#' + h.id + '">' + h.textContent + '</a></li>'; });
-      sec.insertAdjacentHTML('beforeend', '<div class="done"><svg viewBox="0 0 84 60" aria-hidden="true"><path class="pt p2" d="M42 56 C20 50 10 34 14 22 C28 26 38 40 42 56 Z" fill="#e8a8b8"/><path class="pt p2" d="M42 56 C64 50 74 34 70 22 C56 26 46 40 42 56 Z" fill="#e8a8b8"/><path class="pt p3" d="M42 56 C30 42 32 18 42 4 C52 18 54 42 42 56 Z" fill="#f6c6d2"/><path class="pt" d="M8 56 Q42 46 76 56" stroke="#9cd68c" stroke-width="3" fill="none"/></svg><span>這一章讀完了</span></div>' + deepBox(c.id) + readingBox(c.id) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
+      sec.insertAdjacentHTML('beforeend', '<div class="done"><svg viewBox="0 0 84 60" aria-hidden="true"><path class="pt p2" d="M42 56 C20 50 10 34 14 22 C28 26 38 40 42 56 Z" fill="#e8a8b8"/><path class="pt p2" d="M42 56 C64 50 74 34 70 22 C56 26 46 40 42 56 Z" fill="#e8a8b8"/><path class="pt p3" d="M42 56 C30 42 32 18 42 4 C52 18 54 42 42 56 Z" fill="#f6c6d2"/><path class="pt" d="M8 56 Q42 46 76 56" stroke="#9cd68c" stroke-width="3" fill="none"/></svg><span>這一章讀完了</span></div>' + deepBox(c.id) + readingBox(c.id) + shareBox(c) + printBox(c.id) + feedbackBox(c.label + (c.short && c.short !== c.label ? ' ' + c.short : '')) + chapnav(i));
       main.appendChild(sec);
       if (c.part && (i === 0 || chapters[i - 1].part !== c.part)) {
         tocHtml += '<li class="toc-part">' + c.part + '</li>';
@@ -682,6 +700,23 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
       return '<a class="deep-b" href="#' + c.id + '"><span>' + c.part + '・' + c.label + '</span><b>' + esc(c.title) + '</b></a>';
     }).join('') + '</div>';
   }
+  function shareBox(c) {
+    var name = c.label + '・' + (c.short || c.title);
+    return '<div class="share" data-ch="' + c.id + '" data-name="' + esc(name) + '"><div class="share-t">覺得有用？分享這一章</div>' +
+      '<button type="button" class="btn pri share-go">分享給朋友</button> <a class="btn share-line" target="_blank" rel="noopener" href="https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(SITE + '#' + c.id) + '">用 LINE 傳</a> <button type="button" class="btn share-copy">複製連結</button><span class="share-msg" aria-live="polite"></span></div>';
+  }
+  var SITE = 'https://yilungchen-prog.github.io/agama-guide/';
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.share-go, .share-copy'); if (!b) return;
+    var box = b.closest('.share'), url = SITE + '#' + box.getAttribute('data-ch'), name = box.getAttribute('data-name'), msg = $('.share-msg', box);
+    function copied() { msg.textContent = '已複製連結'; setTimeout(function () { msg.textContent = ''; }, 2500); }
+    function copy() {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(copied, function () { prompt('複製這個連結：', url); });
+      else prompt('複製這個連結：', url);
+    }
+    if (b.classList.contains('share-go') && navigator.share) { navigator.share({ title: name + '｜老陳的原始佛學指南', text: name, url: url }).catch(function () {}); }
+    else copy();
+  });
   function readingBox(cid) {
     var list = books.filter(function (b) { return (b.chapters || []).indexOf(cid) >= 0; });
     if (!list.length) return '';
@@ -917,6 +952,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     });
     centerTab();
     heads = $$(':scope > h1, :scope > h2', sec); curCh = ch; lastHead = null;
+    var tc = chapterOf(ch); document.title = tc ? tc.label + '・' + (tc.short || tc.title) + '｜老陳的原始佛學指南' : (ch === 'dict' ? '名詞辭典與入門問答｜老陳的原始佛學指南' : '老陳的原始佛學指南：理性修佛篇');
     var cc = chapterOf(ch); $('#where').textContent = cc ? cc.label : (ch === 'dict' ? '辭典' : '');
     if (cc) { try { localStorage.setItem('lastCh', ch); } catch (e) {} }
     if (ch === 'home') {
