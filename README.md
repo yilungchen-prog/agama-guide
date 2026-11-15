@@ -157,12 +157,13 @@
 
 ## 訪客統計（GoatCounter）
 
-- 使用 GoatCounter（免費、不用 cookie，所以不需要同意視窗），後台：https://oldchenbuddha.goatcounter.com
-- 帳號代碼寫在 index.html 的 `GC_CODE`（目前 `oldchenbuddha`），換帳號只改這一行。
+- 使用 GoatCounter（免費、不用 cookie，所以不需要同意視窗），後台：https://oldchen.goatcounter.com
+- 帳號代碼寫在 index.html 的 `GC_CODE`（目前 `oldchen`），換帳號只改這一行。
 - 統計程式從 gc.zgo.at 載入，屬於外部網址，離線快取（sw.js）本來就不處理，不會被快取漏算。
 - 網站切換章節不換頁，所以每次切換章節由 `track('/' + 章節id, 分頁標題)` 記一筆；路徑 `/home`、`/ch5`、`/dict` 等。
 - 事件（後台「事件」區）：下載 PDF（`下載PDF-ch5`、`下載PDF-book`）、分享按鈕（`分享-系統-ch5`、`分享-LINE-ch5`、`分享-複製-ch5`）。
 - 在本機（localhost）測試時不會載入統計，不會灌水。
+- 排除自己的瀏覽：在自己每台手機／電腦的瀏覽器打開一次 `https://yilungchen-prog.github.io/agama-guide/#toggle-goatcounter`，之後這個瀏覽器就不計入（再開一次會恢復）。
 - 來源追蹤：在 YouTube、方格子貼網址時可以加 `?utm_source=youtube`、`?utm_source=vocus`，後台的「來源」就會分得清楚。
 
 ## 分享與搜尋（推廣準備）
