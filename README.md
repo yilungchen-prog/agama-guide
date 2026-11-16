@@ -171,6 +171,12 @@
 - 驗證方式：index.html `<head>` 裡的 `google-site-verification` meta 標記（網址前置字元資源 https://yilungchen-prog.github.io/agama-guide/）。這行不能刪，刪了會失去驗證。
 - 網站地圖：sitemap.xml（已在 Search Console 提交）。
 
+## 辭典頁的搜尋
+
+- 搜尋框旁有「搜尋」按鈕（按鍵盤的搜尋鍵也一樣）；打字時即時過濾照樣保留。按下搜尋會收起鍵盤、捲到第一筆結果，並顯示「找到：名詞 N 筆、問答 N 筆、書 N 本、章節 N 章」。
+- 名詞辭典、入門問答、推薦閱讀三區都會過濾；符合的字用金色底色（`mark.hit`）標出。
+- 「章節內容」：搜尋所有章節內文（p、li、h2、h3、summary，不含小動畫與工具區塊），依提到次數排序，每章最多兩段前後文。點了會跳到該章、捲到那一段，並短暫標示關鍵字（`pendingFind` → `doFind`）。
+
 ## 分享與搜尋（推廣準備）
 
 - `index.html` 的 `<head>`：網站說明（description）、分享預覽（og:title／og:description／og:image，圖在 `icons/og.png`，1200×630）。

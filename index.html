@@ -257,6 +257,19 @@ a.g-card:hover{box-shadow:0 0 0 2px var(--c)}
 .dsearch{position:sticky;top:var(--dq-top,0);margin:6px 0 18px}
 .dsearch input{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid rgba(242,196,109,.45);border-radius:12px;color:var(--ink);font:inherit;font-size:16px;padding:11px 14px}
 .dsearch input:focus{outline:none;border-color:var(--gold)}
+.dsearch{display:flex;gap:8px}
+.dsearch input{flex:1;min-width:0}
+.dsearch button{flex:none;background:var(--gold);color:#1a1205;border:0;border-radius:12px;font:inherit;font-size:16px;font-weight:700;padding:0 18px;cursor:pointer}
+.dq-sum{margin:-8px 0 16px;color:var(--muted);font-size:14px}
+mark.hit{background:rgba(242,196,109,.38);color:inherit;border-radius:3px;padding:0 1px}
+.chres{margin:0 0 22px}
+.chres-h{font-size:17px;color:var(--gold);margin:0 0 10px}
+.chres-item{display:block;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;margin:0 0 8px;color:var(--ink);text-decoration:none}
+.chres-t{font-weight:700;font-size:15px;color:var(--cyan,#62d0ef);margin-bottom:4px}
+.chres-s{font-size:15px;line-height:1.7;margin:2px 0;color:var(--ink)}
+.chres-n{font-size:13px;color:var(--muted)}
+.find-flash{animation:findflash 2.4s ease-out 1}
+@keyframes findflash{0%,40%{background:rgba(242,196,109,.18);box-shadow:0 0 0 6px rgba(242,196,109,.18)}100%{background:transparent;box-shadow:none}}
 .dcats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
 .dcat{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--muted);border-radius:999px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer}
 .dcat.on{background:var(--gold);border-color:var(--gold);color:#1a1205;font-weight:700}
@@ -498,7 +511,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
   // 經文出處只顯示經號文字，不連到外部網站
 
   // ===== 版本自動更新：每次打開／切回頁面都檢查 version.json，有新版就自動重新載入 =====
-  var APP_VER = '20261116-2101';
+  var APP_VER = '20261116-2116';
   // ---------- 訪客統計（GoatCounter：不用 cookie、不需同意視窗）----------
   var GC_CODE = 'oldchen';
   (function () {
@@ -817,6 +830,68 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     h1.insertAdjacentHTML('afterend', h + '</div>');
   }
 
+  // ---------- 搜尋：標示關鍵字、章節內文 ----------
+  var pendingFind = null, chIndex = null;
+  function unmarkHits(root) {
+    $$('mark.hit', root).forEach(function (m) { var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize(); });
+  }
+  function markHits(root, q) {
+    if (!q) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), ns = [];
+    while (w.nextNode()) { var n = w.currentNode; if (!n.parentNode.closest('mark.hit, svg, script, style')) ns.push(n); }
+    ns.forEach(function (n) {
+      var t = n.nodeValue, l = t.toLowerCase(), i = l.indexOf(q); if (i < 0) return;
+      var f = document.createDocumentFragment(), p = 0;
+      while (i >= 0) {
+        f.appendChild(document.createTextNode(t.slice(p, i)));
+        var m = document.createElement('mark'); m.className = 'hit'; m.textContent = t.slice(i, i + q.length); f.appendChild(m);
+        p = i + q.length; i = l.indexOf(q, p);
+      }
+      f.appendChild(document.createTextNode(t.slice(p)));
+      n.parentNode.replaceChild(f, n);
+    });
+  }
+  function findEls(sec) {
+    return $$('p, li, h2, h3, summary', sec).filter(function (el) {
+      return !el.closest('.mini, .kw, .rd, .share, .deep, .fb, .chapnav, .dgm, svg') && !el.querySelector('p, li, h2, h3, summary');
+    });
+  }
+  function searchChapters(q) {
+    if (!chIndex) {
+      chIndex = [];
+      secs.forEach(function (s) {
+        var id = s.getAttribute('data-ch'), c = chapterOf(id); if (!c) return;
+        chIndex.push({ id: id, label: c.label + '・' + (c.short || c.title), texts: findEls(s).map(function (el) { return el.textContent.replace(/\s+/g, ' ').trim(); }) });
+      });
+    }
+    var out = [];
+    chIndex.forEach(function (c) {
+      var count = 0, snips = [], first = -1;
+      c.texts.forEach(function (t, i) {
+        var l = t.toLowerCase(), k = l.indexOf(q); if (k < 0) return;
+        if (first < 0) first = i;
+        var j = k; while (j >= 0) { count++; j = l.indexOf(q, j + q.length); }
+        if (snips.length < 2 && !snips.some(function (x) { return x.indexOf(t.slice(k, k + 20)) >= 0; })) {
+          var a = Math.max(0, k - 24), b = Math.min(t.length, k + q.length + 36);
+          snips.push((a > 0 ? '⋯' : '') + t.slice(a, b) + (b < t.length ? '⋯' : ''));
+        }
+      });
+      if (count) out.push({ id: c.id, label: c.label, count: count, snips: snips, first: first });
+    });
+    out.sort(function (a, b) { return b.count - a.count; });
+    return out;
+  }
+  function doFind(sec) {
+    var f = pendingFind; pendingFind = null; if (!f || !f.q) return;
+    var els = findEls(sec), el = els[f.n];
+    if (!el || el.textContent.toLowerCase().indexOf(f.q) < 0) el = els.filter(function (x) { return x.textContent.toLowerCase().indexOf(f.q) >= 0; })[0];
+    if (!el) return;
+    var d = el.closest('details'); if (d) d.open = true;
+    markHits(el, f.q);
+    el.scrollIntoView({ block: 'center' });
+    el.classList.remove('find-flash'); void el.offsetWidth; el.classList.add('find-flash');
+    setTimeout(function () { unmarkHits(el); }, 8000);
+  }
   // ---------- 辭典與問答頁 ----------
   function buildDict() {
     var sec = document.createElement('section');
@@ -825,16 +900,17 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     glossary.forEach(function (g) { if (g.cat && cats.indexOf(g.cat) < 0) cats.push(g.cat); });
     var h = '<h1 id="dict"><span class="ch-label">工具</span><br>名詞辭典與入門問答</h1>' +
       '<p class="part-intro">看不懂的名詞，在這裡一次查清楚。每個名詞都附上它出現在哪幾章，點了就能跳過去讀。下面還有入門者最常問的問題，以及推薦閱讀的書單。</p>' +
-      '<div class="dsearch"><input id="dq" type="search" placeholder="搜尋名詞或問題，例如：無我、涅槃、吃素" autocomplete="off"></div>' +
+      '<form class="dsearch" id="dqf" action="#" role="search"><input id="dq" type="search" enterkeyhint="search" placeholder="搜尋名詞、問題、書或章節內容" autocomplete="off"><button type="submit">搜尋</button></form><p class="dq-sum" hidden></p>' +
+      '<div class="chres" hidden><h3 class="chres-h">章節內容</h3><div class="chres-list"></div></div>' +
       '<h2 id="dict-1">一、名詞辭典</h2><div class="dcats"><button type="button" class="dcat on" data-c="">全部</button>';
     cats.forEach(function (c) { h += '<button type="button" class="dcat" data-c="' + esc(c) + '">' + esc(c) + '</button>'; });
     h += '</div><div class="dict-list"></div><p class="dict-none" hidden>找不到符合的名詞。</p>' +
       '<h2 id="dict-2">二、入門問答</h2><div class="qa-list"></div><p class="qa-none" hidden>找不到符合的問題。</p>' +
       '<h2 id="dict-3">三、推薦閱讀</h2><p>挑的都是跟理性修佛方向接近、有中文版的書。建議順序：入門 → 打基礎 → 學方法 → 科學。每本都附上讀法提醒。</p>' +
       books.map(function (b) {
-        return '<div class="book"><div class="book-h"><b>《' + esc(b.title) + '》</b><span class="book-lv">' + esc(b.level) + '</span></div><div class="book-a">' + esc(b.author) + '</div>' +
+        return '<div class="book" data-k="' + esc((b.title + ' ' + b.author + ' ' + b.level + ' ' + b.why + ' ' + b.tip).toLowerCase()) + '"><div class="book-h"><b>《' + esc(b.title) + '》</b><span class="book-lv">' + esc(b.level) + '</span></div><div class="book-a">' + esc(b.author) + '</div>' +
           '<p>' + esc(b.why) + '</p><p class="book-tip"><span>讀法提醒</span>' + esc(b.tip) + '</p></div>';
-      }).join('') + feedbackBox('辭典與問答');
+      }).join('') + '<p class="book-none" hidden>找不到符合的書。</p>' + feedbackBox('辭典與問答');
     sec.innerHTML = h;
     return sec;
   }
@@ -871,7 +947,8 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     $$('.qa-a', sec).forEach(function (el) { linkTerms(el, SKIP); });
     var cat = '';
     function apply() {
-      var q = ($('#dq').value || '').trim().toLowerCase(), nd = 0, nq = 0;
+      var q = ($('#dq').value || '').trim().toLowerCase(), nd = 0, nq = 0, nb = 0, nc = 0;
+      unmarkHits(sec);
       $$('.ditem', sec).forEach(function (d) {
         var ok = (!cat || d.getAttribute('data-c') === cat) && (!q || d.getAttribute('data-k').indexOf(q) >= 0);
         d.hidden = !ok; if (ok) nd++;
@@ -886,8 +963,37 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
         while (n && !n.classList.contains('qa-cat')) { if (!n.hidden) any = true; n = n.nextElementSibling; }
         c.hidden = !any;
       });
-      $('.dict-none', sec).hidden = nd > 0; $('.qa-none', sec).hidden = nq > 0;
+      $$('.book', sec).forEach(function (d) {
+        var ok = !q || d.getAttribute('data-k').indexOf(q) >= 0;
+        d.hidden = !ok; if (ok) nb++;
+      });
+      $('.dict-none', sec).hidden = nd > 0; $('.qa-none', sec).hidden = nq > 0; $('.book-none', sec).hidden = nb > 0;
+      var cr = $('.chres', sec);
+      if (q) {
+        var res = searchChapters(q), h = '';
+        nc = res.length;
+        res.slice(0, 20).forEach(function (r) {
+          h += '<a class="chres-item" href="#' + r.id + '" data-n="' + r.first + '"><div class="chres-t">' + esc(r.label) + '</div>' +
+            r.snips.map(function (t) { return '<p class="chres-s">' + esc(t) + '</p>'; }).join('') +
+            (r.count > r.snips.length ? '<div class="chres-n">這一章共有 ' + r.count + ' 處提到</div>' : '') + '</a>';
+        });
+        $('.chres-list', sec).innerHTML = h;
+        cr.hidden = !nc;
+        $$('.ditem, .qa, .book, .chres-item', sec).forEach(function (d) { if (!d.hidden) markHits(d, q); });
+      } else { cr.hidden = true; $('.chres-list', sec).innerHTML = ''; }
+      var sum = $('.dq-sum', sec);
+      sum.hidden = !q;
+      if (q) sum.textContent = (nd + nq + nb + nc) ? '找到：名詞 ' + nd + ' 筆、問答 ' + nq + ' 筆、書 ' + nb + ' 本、章節 ' + nc + ' 章' : '找不到「' + q + '」，換個說法試試看。';
     }
+    $('#dqf').addEventListener('submit', function (e) {
+      e.preventDefault(); apply(); $('#dq').blur();
+      var first = $$('.chres:not([hidden]), .ditem:not([hidden]), .qa:not([hidden]), .book:not([hidden])', sec)[0];
+      if (first) { var y = first.getBoundingClientRect().top + window.scrollY - 140; window.scrollTo(0, Math.max(0, y)); }
+    });
+    $('.chres-list', sec).addEventListener('click', function (e) {
+      var a = e.target.closest('.chres-item'); if (!a) return;
+      pendingFind = { ch: a.getAttribute('href').slice(1), q: ($('#dq').value || '').trim().toLowerCase(), n: +a.getAttribute('data-n') };
+    });
     $('#dq').addEventListener('input', apply);
     $('.dcats', sec).addEventListener('click', function (e) {
       var b = e.target.closest('.dcat'); if (!b) return;
@@ -996,6 +1102,7 @@ blockquote.gatha{font-family:var(--display);font-size:clamp(22px,6vw,28px);line-
     watchFx(sec); shineTitle(sec);
     if (pendingY !== null) { window.scrollTo(0, pendingY); pendingY = null; }
     else if (target && target.tagName === 'H2') target.scrollIntoView(); else window.scrollTo(0, 0);
+    if (pendingFind && pendingFind.ch === sec.getAttribute('data-ch')) setTimeout(function () { doFind(sec); }, 80);
     onScroll();
   }
   var bar = $('#bar'), tocLinks = {};
